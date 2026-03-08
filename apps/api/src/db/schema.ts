@@ -16,6 +16,7 @@ export const users = pgTable('users', {
     authMethods: text('auth_methods').array().default([]),
     polarCustomerId: text('polar_customer_id'),
     hasLicense: boolean('has_license').notNull().default(false),
+    stripeCustomerId: text('stripe_customer_id'),
     role: text('role').notNull().default(userRole.user),
     createdAt: timestamp('created_at', { withTimezone: true })
         .defaultNow()
@@ -45,6 +46,9 @@ export const claws = pgTable(
         polarSubscriptionId: text('polar_subscription_id').unique(),
         polarProductId: text('polar_product_id'),
         polarCustomerId: text('polar_customer_id'),
+        stripeSubscriptionId: text('stripe_subscription_id').unique(),
+        stripePriceId: text('stripe_price_id'),
+        stripeCustomerId: text('stripe_customer_id'),
         subscriptionStatus: text('subscription_status').default('pending'),
         billingInterval: text('billing_interval'),
         deletionScheduledAt: timestamp('deletion_scheduled_at', {
@@ -60,6 +64,7 @@ export const claws = pgTable(
     (table) => [
         index('claws_user_id_idx').on(table.userId),
         index('claws_polar_subscription_id_idx').on(table.polarSubscriptionId),
+        index('claws_stripe_subscription_id_idx').on(table.stripeSubscriptionId),
         index('claws_subdomain_idx').on(table.subdomain),
         index('claws_deletion_scheduled_at_idx').on(table.deletionScheduledAt)
     ]

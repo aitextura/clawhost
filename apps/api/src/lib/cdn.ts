@@ -1,4 +1,4 @@
-const CDN_URL = 'https://cdn.clawhost.cloud'
+const CDN_URL = process.env.CDN_URL || 'https://cdn.clawhost.cloud'
 
 const CDN_ASSETS = {
     LOGO: `${CDN_URL}/assets/clawhost-logo.png`,
