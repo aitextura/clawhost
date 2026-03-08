@@ -17,6 +17,7 @@ import {
     clawsRoutes,
     plansRoutes,
     sshKeysRoutes,
+    tokensRoutes,
     usersRoutes,
     webhooksRoutes
 } from '@/routes'
@@ -29,13 +30,13 @@ const isDev = process.env.NODE_ENV !== 'production'
 app.use(
     '*',
     cors({
-        origin: isDev
-            ? [
-                  'https://clawhost.cloud',
-                  'https://www.clawhost.cloud',
-                  'http://localhost:1111'
-              ]
-            : ['https://clawhost.cloud', 'https://www.clawhost.cloud'],
+        origin: (() => {
+            const envOrigins = process.env.CORS_ORIGINS?.split(',').map(s => s.trim()).filter(Boolean)
+            if (envOrigins?.length) return isDev ? [...envOrigins, 'http://localhost:1111'] : envOrigins
+            return isDev
+                ? ['https://clawhost.cloud', 'https://www.clawhost.cloud', 'http://localhost:1111']
+                : ['https://clawhost.cloud', 'https://www.clawhost.cloud']
+        })(),
         allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization'],
         exposeHeaders: ['X-Sample-Rate', 'X-Channels', 'X-Audio-Format'],
@@ -160,6 +161,23 @@ app.use('/*', async (c, next) => {
                         END`
                     }
                 })
+                .catch(async (err) => {
+                    if (err?.code === '23505' && err?.constraint === 'users_email_unique') {
+                        await db
+                            .update(users)
+                            .set({
+                                id: decoded.uid,
+                                authMethods: sql`CASE
+                                    WHEN ${authMethod} = ANY(COALESCE(${users.authMethods}, '{}'))
+                                    THEN COALESCE(${users.authMethods}, '{}')
+                                    ELSE array_append(COALESCE(${users.authMethods}, '{}'), ${authMethod})
+                                END`
+                            })
+                            .where(eq(users.email, decoded.email!))
+                    } else {
+                        throw err
+                    }
+                })
         } else {
             return fail(c, t('api.unauthorized'), 401)
         }
@@ -183,6 +201,7 @@ app.use('/*', async (c, next) => {
 app.route('/ai', aiRoutes)
 app.route('/claws', clawsRoutes)
 app.route('/ssh-keys', sshKeysRoutes)
+app.route('/tokens', tokensRoutes)
 app.route('/users', usersRoutes)
 
 app.notFound((c) => fail(c, t('api.notFound'), 404))

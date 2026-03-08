@@ -50,7 +50,12 @@ import {
     getClawBindings,
     updateClawBindings,
     getClawCredentials,
-    cancelPendingClaw
+    cancelPendingClaw,
+    getLlmKeys,
+    setLlmKey,
+    deleteLlmKey,
+    getUsage,
+    reportUsage
 } from '@/controllers/claws'
 import adminOnly from '@/middleware/adminOnly'
 
@@ -103,6 +108,16 @@ app.post('/:id/clawhub/remove', removeClawHubSkill)
 app.post('/:id/clawhub/update', updateClawHubSkill)
 app.post('/:id/clawhub/updates', checkClawHubUpdates)
 app.get('/:id/credentials', getClawCredentials)
+
+// LLM Keys
+app.get('/:id/llm-keys', getLlmKeys)
+app.post('/:id/llm-keys', setLlmKey)
+app.delete('/:id/llm-keys/:provider', deleteLlmKey)
+
+// Token Usage
+app.get('/:id/usage', getUsage)
+app.post('/:id/usage/report', reportUsage)
+
 app.patch('/:id', renameClaw)
 app.delete('/:id', deleteClaw)
 

@@ -14,6 +14,7 @@ export const users = pgTable('users', {
     name: text('name'),
     authMethods: text('auth_methods').array().default([]),
     polarCustomerId: text('polar_customer_id'),
+    stripeCustomerId: text('stripe_customer_id'),
     role: text('role').notNull().default(userRole.user),
     createdAt: timestamp('created_at', { withTimezone: true })
         .defaultNow()
@@ -39,10 +40,18 @@ export const claws = pgTable(
             onDelete: 'set null'
         }),
         subdomain: text('subdomain').unique(),
+        tier: text('tier').default('starter'),
+        tokenLimitDaily: integer('token_limit_daily').default(100000),
+        tokensUsedToday: integer('tokens_used_today').default(0),
+        tokenResetAt: timestamp('token_reset_at', { withTimezone: true }),
+        llmKeysMode: text('llm_keys_mode').default('platform'),
         gatewayToken: text('gateway_token'),
         polarSubscriptionId: text('polar_subscription_id').unique(),
         polarProductId: text('polar_product_id'),
         polarCustomerId: text('polar_customer_id'),
+        stripeSubscriptionId: text('stripe_subscription_id').unique(),
+        stripePriceId: text('stripe_price_id'),
+        stripeCustomerId: text('stripe_customer_id'),
         subscriptionStatus: text('subscription_status').default('pending'),
         deletionScheduledAt: timestamp('deletion_scheduled_at', {
             withTimezone: true
@@ -57,6 +66,7 @@ export const claws = pgTable(
     (table) => [
         index('claws_user_id_idx').on(table.userId),
         index('claws_polar_subscription_id_idx').on(table.polarSubscriptionId),
+        index('claws_stripe_subscription_id_idx').on(table.stripeSubscriptionId),
         index('claws_subdomain_idx').on(table.subdomain),
         index('claws_deletion_scheduled_at_idx').on(table.deletionScheduledAt)
     ]
@@ -174,5 +184,47 @@ export const volumes = pgTable(
     (table) => [
         index('volumes_user_id_idx').on(table.userId),
         index('volumes_claw_id_idx').on(table.clawId)
+    ]
+)
+
+export const llmApiKeys = pgTable(
+    'llm_api_keys',
+    {
+        id: text('id').primaryKey(),
+        clawId: text('claw_id')
+            .notNull()
+            .references(() => claws.id, { onDelete: 'cascade' }),
+        provider: text('provider').notNull(),
+        encryptedKey: text('encrypted_key').notNull(),
+        keyHint: text('key_hint').notNull(),
+        createdAt: timestamp('created_at', { withTimezone: true })
+            .defaultNow()
+            .notNull(),
+        updatedAt: timestamp('updated_at', { withTimezone: true })
+            .defaultNow()
+            .notNull()
+    },
+    (table) => [
+        index('llm_api_keys_claw_id_idx').on(table.clawId)
+    ]
+)
+
+export const tokenUsageLogs = pgTable(
+    'token_usage_logs',
+    {
+        id: text('id').primaryKey(),
+        clawId: text('claw_id')
+            .notNull()
+            .references(() => claws.id, { onDelete: 'cascade' }),
+        tokensUsed: integer('tokens_used').notNull(),
+        model: text('model'),
+        provider: text('provider'),
+        timestamp: timestamp('timestamp', { withTimezone: true })
+            .defaultNow()
+            .notNull()
+    },
+    (table) => [
+        index('token_usage_logs_claw_id_idx').on(table.clawId),
+        index('token_usage_logs_timestamp_idx').on(table.timestamp)
     ]
 )

@@ -7,7 +7,9 @@ const CLAW_DETAIL_TABS = {
     TERMINAL: 'terminal',
     SKILLS: 'skills',
     VERSIONS: 'versions',
-    SETTINGS: 'settings'
+    SETTINGS: 'settings',
+    LLM_KEYS: 'llm-keys',
+    TOKEN_USAGE: 'token-usage'
 } as const
 
 export default CLAW_DETAIL_TABS
