@@ -4,11 +4,26 @@ import type { LogoProps } from '@/ts/Interfaces'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { t } from '@openclaw/i18n'
 import { ROUTES } from '@/lib'
+import { useBrand } from '@/components/clawds'
 
 const Logo: FC<LogoProps> = ({ to }): ReactNode => {
+    const brand = useBrand()
     const destination = to || ROUTES.HOME
     const { pathname, hash, search } = useLocation()
     const navigate = useNavigate()
+
+    if (brand.id === 'clawds') {
+        return (
+            <Link
+                to={destination}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className='font-clash text-xl font-bold'
+                aria-label={brand.name}
+            >
+                {brand.name}
+            </Link>
+        )
+    }
 
     const handleClick = (e: React.MouseEvent) => {
         if (pathname === destination) {

@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import App from '@/App'
+import { BrandProvider } from '@/components/clawds'
 import '@/index.css'
 
 const PERSISTABLE_QUERIES = new Set(['profile', 'userStats'])
@@ -40,9 +41,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 }
             }}
         >
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
+            <BrandProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </BrandProvider>
         </PersistQueryClientProvider>
     </React.StrictMode>
 )

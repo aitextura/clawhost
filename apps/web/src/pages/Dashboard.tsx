@@ -52,6 +52,7 @@ import {
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui'
 import { CreateClawModal, LocalCreateClawModal } from '@/components/dashboard'
+import { useBrand, SimplifiedCreateClaw } from '@/components/clawds'
 import {
     PlaygroundCanvas,
     PlaygroundDetailPanel,
@@ -64,6 +65,7 @@ import { getLegalLinks } from '@/data'
 import { useAuth } from '@/lib/auth'
 
 const Dashboard: FC = (): ReactNode => {
+    const brand = useBrand()
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
     const [showCreate, setShowCreate] = useState(false)
@@ -799,7 +801,17 @@ const Dashboard: FC = (): ReactNode => {
                 />
             )}
 
-            {showCreate && !isLocal && plans.length > 0 && (
+            {showCreate && !isLocal && brand.features.simplifiedPurchase && (
+                <div className='bg-background/80 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm'>
+                    <div className='bg-background border-border w-full max-w-lg rounded-xl border shadow-xl'>
+                        <SimplifiedCreateClaw
+                            onClose={() => setShowCreate(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {showCreate && !isLocal && !brand.features.simplifiedPurchase && plans.length > 0 && (
                 <CreateClawModal
                     plans={plans}
                     locations={locations || []}
