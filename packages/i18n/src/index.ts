@@ -1,10 +1,7 @@
-import type { TranslationKey, Languages, Translations } from './types'
+export type { TranslationKey, Languages, Translations } from './types'
 
-import t from './t'
-import setLanguage from './setLanguage'
-import getLanguage from './getLanguage'
-import en from './langs/en'
-
-export type { TranslationKey, Languages, Translations }
-export { t, setLanguage, getLanguage, en }
+export { default as t } from './t'
+export { default as setLanguage } from './setLanguage'
+export { default as getLanguage } from './getLanguage'
+export { default as en } from './langs/en'
 export { applyBrandOverlay } from './overlays'

@@ -1,11 +1,17 @@
 import type { Translations } from '../types'
+import clawdsDe from './clawds-de'
 import clawdsEn from './clawds-en'
+import clawdsEs from './clawds-es'
+import clawdsFr from './clawds-fr'
 import clawdsRu from './clawds-ru'
 
 type BrandId = 'openclaw' | 'clawds'
 
 const overlays: Record<string, Record<string, unknown>> = {
+    de: clawdsDe,
     en: clawdsEn,
+    es: clawdsEs,
+    fr: clawdsFr,
     ru: clawdsRu,
 }
 

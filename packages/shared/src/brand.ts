@@ -86,7 +86,18 @@ const BRANDS: Record<BrandId, BrandConfig> = {
     clawds: CLAWDS_BRAND
 }
 
-const BRAND_ID = (process.env.BRAND || process.env.VITE_BRAND || 'openclaw') as BrandId
+const BRAND_ID = (() => {
+    try {
+        if (typeof process !== 'undefined' && process?.env) {
+            return process.env.BRAND || process.env.VITE_BRAND
+        }
+    } catch { /* browser */ }
+    try {
+        return (import.meta as unknown as Record<string, Record<string, string>>)
+            .env?.VITE_BRAND
+    } catch { /* node */ }
+    return 'openclaw'
+})() as BrandId
 
 export const brand: BrandConfig = BRANDS[BRAND_ID] || OPENCLAW_BRAND
 

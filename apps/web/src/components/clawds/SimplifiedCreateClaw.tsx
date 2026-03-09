@@ -1,94 +1,195 @@
 import type { FC, ReactNode } from 'react'
+import type { ErrorResponse } from '@/ts/Interfaces'
+import type { TierId, TierConfig } from '@openclaw/shared'
+
 import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { t } from '@openclaw/i18n'
+import { TIERS, TIER_IDS } from '@openclaw/shared'
+import { useUIStore } from '@/lib/store'
+import { usePurchaseClaw } from '@/hooks'
 import { useBrand } from '@/components/clawds/BrandProvider'
-import { TIERS, type TierId } from '@openclaw/shared'
-import { Button, Input } from '@/components/ui'
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui'
+import { CircleNotchIcon, CheckIcon } from '@phosphor-icons/react'
+import { cn } from '@/lib'
 
 interface SimplifiedCreateClawProps {
     onClose: () => void
 }
 
+function TierCard({
+    tier,
+    selected,
+    onClick,
+    primaryColor
+}: {
+    tier: TierConfig
+    selected: boolean
+    onClick: () => void
+    primaryColor: string
+}): ReactNode {
+    return (
+        <div
+            onClick={onClick}
+            className={cn(
+                'relative cursor-pointer rounded-xl border-2 p-6 transition-all hover:shadow-lg',
+                selected
+                    ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)]/5 shadow-lg'
+                    : 'border-border hover:border-[var(--brand-primary)]/50'
+            )}
+        >
+            {tier.id === 'pro' && (
+                <span
+                    className='absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold text-white'
+                    style={{ backgroundColor: primaryColor }}
+                >
+                    {t('landing.recommended')}
+                </span>
+            )}
+            <h3 className='font-clash text-xl font-bold'>{tier.name}</h3>
+            <p className='text-muted-foreground mt-1 text-sm'>
+                {tier.vcpu} vCPU &middot; {tier.ramGb} GB RAM
+            </p>
+            <div className='mt-3'>
+                <span className='text-3xl font-bold'>
+                    ${tier.priceMonthly / 100}
+                </span>
+                <span className='text-muted-foreground'>
+                    {t('landing.perMonth')}
+                </span>
+            </div>
+            <ul className='mt-4 space-y-2 text-sm'>
+                <li className='flex items-center gap-2'>
+                    <CheckIcon
+                        className='h-4 w-4'
+                        style={{ color: primaryColor }}
+                    />
+                    {tier.vcpu} vCPU
+                </li>
+                <li className='flex items-center gap-2'>
+                    <CheckIcon
+                        className='h-4 w-4'
+                        style={{ color: primaryColor }}
+                    />
+                    {tier.ramGb} GB RAM
+                </li>
+                <li className='flex items-center gap-2'>
+                    <CheckIcon
+                        className='h-4 w-4'
+                        style={{ color: primaryColor }}
+                    />
+                    {tier.diskGb} GB Disk
+                </li>
+                <li className='flex items-center gap-2'>
+                    <CheckIcon
+                        className='h-4 w-4'
+                        style={{ color: primaryColor }}
+                    />
+                    {(tier.tokenLimitDaily / 1000).toFixed(0)}K tokens/day
+                </li>
+                {tier.sshAccess && (
+                    <li className='flex items-center gap-2'>
+                        <CheckIcon
+                            className='h-4 w-4'
+                            style={{ color: primaryColor }}
+                        />
+                        SSH Access
+                    </li>
+                )}
+            </ul>
+        </div>
+    )
+}
+
 const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
     onClose
 }): ReactNode => {
-    const b = useBrand()
-    const [name, setName] = useState('')
-    const [selectedTier, setSelectedTier] = useState<TierId>('starter')
-    const [loading, setLoading] = useState(false)
+    const brand = useBrand()
+    const [selected, setSelected] = useState<TierId | null>(null)
+    const { showToast } = useUIStore()
+    const { mutate: purchaseClaw, isPending } = usePurchaseClaw()
+    const queryClient = useQueryClient()
 
-    const handleCreate = async () => {
-        if (!name.trim()) return
-        setLoading(true)
-        try {
-            // Simplified flow: uses brand defaults for provider & location
-            // TODO: wire to actual purchase API (initiateClawPurchase with Stripe)
-            console.log('Creating claw:', {
-                name: name.trim(),
-                tier: selectedTier,
-                provider: b.payment.defaultProvider,
-                location: b.payment.defaultLocation
-            })
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
+    const primaryColor = brand.theme.primaryColor
+
+    const handleDeploy = () => {
+        if (!selected) return
+
+        const tier = TIERS[selected]
+        const provider = brand.payment.defaultProvider
+        const planId = tier.providerPlans[provider]
+        const location = brand.payment.defaultLocation
+
+        purchaseClaw(
+            {
+                name: `${brand.name}-${selected}`,
+                provider: provider as 'hetzner' | 'digitalocean' | 'vultr',
+                planId,
+                location,
+                priceMonthly: tier.priceMonthly
+            },
+            {
+                onSuccess: (data) => {
+                    if (data?.checkoutUrl) {
+                        window.location.href = data.checkoutUrl
+                        return
+                    }
+                    showToast(t('createClaw.clawCreated'), 'success')
+                    queryClient.invalidateQueries({ queryKey: ['claws'] })
+                    onClose()
+                },
+                onError: (error) => {
+                    const errMsg =
+                        (error as unknown as ErrorResponse)?.error ||
+                        'Failed to start checkout'
+                    showToast(errMsg, 'error')
+                }
+            }
+        )
     }
 
     return (
-        <div className='space-y-6 p-6'>
-            <h2 className='font-clash text-lg font-semibold'>
-                Create your Claw
-            </h2>
-
-            <Input
-                placeholder='Claw name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-
-            <div className='grid grid-cols-3 gap-3'>
-                {Object.values(TIERS).map((tier) => (
-                    <button
-                        key={tier.id}
-                        onClick={() => setSelectedTier(tier.id)}
-                        className={`rounded-lg border p-4 text-center transition-all ${
-                            selectedTier === tier.id
-                                ? 'border-[var(--brand-primary,#4ecdc4)] bg-[var(--brand-primary,#4ecdc4)]/10'
-                                : 'hover:border-gray-400'
-                        }`}
+        <Dialog open onOpenChange={(open) => !open && onClose()}>
+            <DialogContent className='max-w-2xl'>
+                <DialogHeader>
+                    <DialogTitle className='font-clash'>
+                        {t('createClaw.title')}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className='grid gap-4 sm:grid-cols-3'>
+                    {TIER_IDS.map((tierId) => (
+                        <TierCard
+                            key={tierId}
+                            tier={TIERS[tierId]}
+                            selected={selected === tierId}
+                            onClick={() => setSelected(tierId)}
+                            primaryColor={primaryColor}
+                        />
+                    ))}
+                </div>
+                <div className='mt-2 flex justify-end'>
+                    <Button
+                        onClick={handleDeploy}
+                        disabled={!selected || isPending}
+                        className='gap-2 border-0 px-6 text-white hover:opacity-90'
+                        style={{
+                            background: `linear-gradient(to right, ${primaryColor}, ${brand.theme.accentColor})`
+                        }}
                     >
-                        <div className='font-bold'>{tier.name}</div>
-                        <div className='text-2xl font-bold'>
-                            ${tier.priceMonthly / 100}
-                        </div>
-                        <div className='text-muted-foreground text-sm'>
-                            /month
-                        </div>
-                        <div className='mt-2 text-xs'>
-                            {tier.vcpu} vCPU · {tier.ramGb}GB RAM
-                        </div>
-                    </button>
-                ))}
-            </div>
-
-            <div className='flex gap-3'>
-                <Button
-                    variant='outline'
-                    onClick={onClose}
-                    className='flex-1'
-                >
-                    Cancel
-                </Button>
-                <Button
-                    onClick={handleCreate}
-                    disabled={!name.trim() || loading}
-                    className='flex-1'
-                >
-                    {loading ? 'Creating...' : 'Create & Pay'}
-                </Button>
-            </div>
-        </div>
+                        {isPending && (
+                            <CircleNotchIcon className='h-4 w-4 animate-spin' />
+                        )}
+                        {t('landing.deploy')}
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
     )
 }
 
