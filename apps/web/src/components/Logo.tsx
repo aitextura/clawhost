@@ -5,13 +5,28 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { t } from '@openclaw/i18n'
 import { ROUTES } from '@/lib'
 import usePreferencesStore from '@/lib/store/usePreferencesStore'
+import { useBrand } from '@/components/clawds'
 
 const Logo: FC<LogoProps> = ({ to }): ReactNode => {
+    const brand = useBrand()
     const { pathname, hash, search } = useLocation()
     const product = usePreferencesStore((s) => s.product)
     const destination = to || (product === 'go' ? ROUTES.GO : ROUTES.HOME)
     const navigate = useNavigate()
     const isSamePage = pathname === destination
+
+    if (brand.id === 'clawds') {
+        return (
+            <Link
+                to={destination}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className='font-clash text-xl font-bold'
+                aria-label={brand.name}
+            >
+                {brand.name}
+            </Link>
+        )
+    }
 
     const handleClick = (e: React.MouseEvent) => {
         if (isSamePage) {
