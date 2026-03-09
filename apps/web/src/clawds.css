@@ -4,19 +4,17 @@
  * NEVER modify the upstream index.css — all overrides go here.
  */
 
-@layer base {
-    :root {
-        /* Clawds brand colors (override ClawHost defaults) */
-        --coral-bright: #4ecdc4;
-        --coral-dark: #3ab5ad;
-        --cyan-bright: #4ecdc4;
-        --bg-deep: #1a1a2e;
-        --brand-primary: #4ecdc4;
-        --brand-primary-dark: #3ab5ad;
-        --brand-accent: #ff6b6b;
-        --brand-accent-dark: #e55a5a;
-        --brand-dark: #1a1a2e;
-    }
+:root {
+    /* Clawds brand colors (override ClawHost defaults) */
+    --coral-bright: #4ecdc4;
+    --coral-dark: #3ab5ad;
+    --cyan-bright: #4ecdc4;
+    --bg-deep: #1a1a2e;
+    --brand-primary: #4ecdc4;
+    --brand-primary-dark: #3ab5ad;
+    --brand-accent: #ff6b6b;
+    --brand-accent-dark: #e55a5a;
+    --brand-dark: #1a1a2e;
 }
 
 /* Landing gradient — teal tones instead of coral */
