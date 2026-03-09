@@ -7,3 +7,4 @@ import en from './langs/en'
 
 export type { TranslationKey, Languages, Translations }
 export { t, setLanguage, getLanguage, en }
+export { applyBrandOverlay } from './overlays'

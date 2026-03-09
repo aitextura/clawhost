@@ -17,3 +17,4 @@ export {
 }
 
 export * from './tiers'
+export * from './brand'
