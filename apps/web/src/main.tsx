@@ -8,6 +8,10 @@ import App from '@/App'
 import { BrandProvider } from '@/components/clawds'
 import '@/index.css'
 
+if (import.meta.env.VITE_BRAND === 'clawds') {
+    import('@/clawds.css')
+}
+
 const PERSISTABLE_QUERIES = new Set(['profile', 'userStats'])
 
 const queryClient = new QueryClient({

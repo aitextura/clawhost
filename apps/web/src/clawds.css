@@ -1,0 +1,118 @@
+/**
+ * Clawds brand CSS overrides.
+ * Loaded conditionally when VITE_BRAND=clawds.
+ * NEVER modify the upstream index.css — all overrides go here.
+ */
+
+@layer base {
+    :root {
+        /* Clawds brand colors (override ClawHost defaults) */
+        --coral-bright: #4ecdc4;
+        --coral-dark: #3ab5ad;
+        --cyan-bright: #4ecdc4;
+        --bg-deep: #1a1a2e;
+        --brand-primary: #4ecdc4;
+        --brand-primary-dark: #3ab5ad;
+        --brand-accent: #ff6b6b;
+        --brand-accent-dark: #e55a5a;
+        --brand-dark: #1a1a2e;
+    }
+}
+
+/* Landing gradient — teal tones instead of coral */
+.landing-gradient {
+    background:
+        radial-gradient(
+            ellipse 80% 50% at 50% -20%,
+            rgba(78, 205, 196, 0.15),
+            transparent
+        ),
+        radial-gradient(
+            ellipse 60% 40% at 70% 5%,
+            rgba(58, 181, 173, 0.08),
+            transparent
+        );
+}
+.dark .landing-gradient {
+    background:
+        radial-gradient(
+            ellipse 80% 50% at 50% -20%,
+            rgba(78, 205, 196, 0.25),
+            transparent
+        ),
+        radial-gradient(
+            ellipse 60% 40% at 70% 5%,
+            rgba(58, 181, 173, 0.15),
+            transparent
+        );
+}
+
+/* Landing grid */
+.landing-grid {
+    background-image:
+        linear-gradient(rgba(78, 205, 196, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.05) 1px, transparent 1px);
+}
+.dark .landing-grid {
+    background-image:
+        linear-gradient(rgba(78, 205, 196, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.08) 1px, transparent 1px);
+}
+
+/* Glow border — teal conic gradient */
+.glow-border::before {
+    background: conic-gradient(
+        from var(--glow-angle),
+        rgba(78, 205, 196, 0.6),
+        rgba(58, 181, 173, 0.3),
+        transparent 40%,
+        transparent 60%,
+        rgba(58, 181, 173, 0.3),
+        rgba(78, 205, 196, 0.6)
+    );
+}
+
+/* Playground grid */
+.playground-grid {
+    background-image:
+        linear-gradient(rgba(78, 205, 196, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.03) 1px, transparent 1px);
+}
+.dark .playground-grid {
+    background-image:
+        linear-gradient(rgba(78, 205, 196, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.05) 1px, transparent 1px);
+}
+
+/* Playground loading track */
+.playground-loading-track {
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.15);
+}
+
+/* Playground gradient */
+.playground-gradient {
+    background:
+        radial-gradient(
+            ellipse 80% 50% at 50% -20%,
+            rgba(78, 205, 196, 0.12),
+            transparent
+        ),
+        radial-gradient(
+            ellipse 60% 40% at 70% 5%,
+            rgba(58, 181, 173, 0.06),
+            transparent
+        );
+}
+.dark .playground-gradient {
+    background:
+        radial-gradient(
+            ellipse 80% 50% at 50% -20%,
+            rgba(78, 205, 196, 0.2),
+            transparent
+        ),
+        radial-gradient(
+            ellipse 60% 40% at 70% 5%,
+            rgba(58, 181, 173, 0.12),
+            transparent
+        );
+}

@@ -4,7 +4,7 @@ import t from './t'
 import setLanguage from './setLanguage'
 import getLanguage from './getLanguage'
 import en from './langs/en'
+import { applyBrandOverlay } from './overlays'
 
 export type { TranslationKey, Languages, Translations }
-export { t, setLanguage, getLanguage, en }
-export { applyBrandOverlay } from './overlays'
+export { t, setLanguage, getLanguage, en, applyBrandOverlay }

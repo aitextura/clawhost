@@ -7,9 +7,12 @@ import { ScrollToTop, Toast, ProtectedRoute } from '@/components'
 import { TooltipProvider } from '@/components/ui'
 import { ROUTES } from '@/lib'
 import { useThemeEffect, useLanguageEffect } from '@/hooks'
+import { isClawds } from '@openclaw/shared'
 
 const Go = lazy(() => import('@/pages/Go'))
-const Landing = lazy(() => import('@/pages/Landing'))
+const Landing = lazy(() =>
+    isClawds() ? import('@/pages/ClawdsLanding') : import('@/pages/Landing')
+)
 const Login = lazy(() => import('@/pages/Login'))
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const SSHKeys = lazy(() => import('@/pages/SSHKeys'))

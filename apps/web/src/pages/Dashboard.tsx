@@ -805,13 +805,9 @@ const Dashboard: FC = (): ReactNode => {
             )}
 
             {showCreate && !isLocal && brand.features.simplifiedPurchase && (
-                <div className='bg-background/80 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm'>
-                    <div className='bg-background border-border w-full max-w-lg rounded-xl border shadow-xl'>
-                        <SimplifiedCreateClaw
-                            onClose={() => setShowCreate(false)}
-                        />
-                    </div>
-                </div>
+                <SimplifiedCreateClaw
+                    onClose={() => setShowCreate(false)}
+                />
             )}
 
             {showCreate && !isLocal && !brand.features.simplifiedPurchase && plans.length > 0 && (

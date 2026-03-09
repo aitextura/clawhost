@@ -3,12 +3,18 @@ import type { TranslationKey } from './types'
 import state from './state'
 import { applyBrandOverlay } from './overlays'
 
-const BRAND_ID = (
-    typeof process !== 'undefined'
-        ? process.env.BRAND || process.env.VITE_BRAND
-        : (import.meta as unknown as Record<string, Record<string, string>>)
-              .env?.VITE_BRAND
-) as 'clawds' | 'openclaw' | undefined
+const BRAND_ID = (() => {
+    try {
+        if (typeof process !== 'undefined' && process?.env) {
+            return process.env.BRAND || process.env.VITE_BRAND
+        }
+    } catch { /* browser */ }
+    try {
+        return (import.meta as unknown as Record<string, Record<string, string>>)
+            .env?.VITE_BRAND
+    } catch { /* node */ }
+    return 'openclaw'
+})() as 'clawds' | 'openclaw'
 
 function getNestedValue(obj: unknown, path: string): string {
     const keys = path.split('.')
