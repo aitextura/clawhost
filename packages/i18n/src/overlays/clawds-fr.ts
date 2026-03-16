@@ -10,9 +10,6 @@ const clawdsFr = {
     setup: {
         welcomeTitle: 'Bienvenue sur Clawds',
     },
-    footer: {
-        copyright: 'Clawds. Tous droits réservés.',
-    },
     emails: {
         otpSubject: 'Votre code de connexion Clawds',
         otpPreview: 'Votre code de connexion Clawds : {{code}}',
@@ -41,7 +38,20 @@ const clawdsFr = {
     tiers: {
         tokensPerDay: 'tokens/jour',
     },
+    footer: {
+        copyright: 'Clawds. Tous droits réservés.',
+        poweredBy: 'Propulsé par AI TEXTURA',
+        brandDescription:
+            'Déployez des agents IA dans le cloud en un clic. Ressources dédiées, confidentialité totale, sans infrastructure partagée.',
+        productDescription:
+            'Déployez des agents IA dans le cloud en un clic — créez, connectez et faites évoluer vos agents IA plus rapidement avec Clawds.',
+    },
     landing: {
+        title: 'Déployez des agents IA. Un clic. Terminé.',
+        description:
+            'Déployez des agents IA dans le cloud en un clic. Serveurs dédiés, accès root complet et tarification transparente.',
+        heroDescription:
+            'Déployez des agents IA dans le cloud en un clic — créez, connectez et faites évoluer vos agents IA plus rapidement avec Clawds.',
         whyClawHost: 'Fonctionnalités Tout-en-Un',
         whyClawds: 'Pourquoi Clawds ?',
         clawHostControl: 'Contrôle Clawds',
@@ -68,6 +78,12 @@ const clawdsFr = {
             "Clawds est une plateforme conçue pour rendre OpenClaw accessible à tous. Elle permet aux utilisateurs non techniques comme aux développeurs d'exécuter OpenClaw sans gérer d'infrastructure. Nous gérons les serveurs, la disponibilité, la sécurité et la maintenance — vous utilisez simplement OpenClaw.",
         faq2Answer:
             "Contrairement aux outils d'IA hébergés, Clawds vous donne un vrai serveur avec OpenClaw installé. Vous possédez l'infrastructure, contrôlez tout et n'êtes pas limité par une plateforme partagée.",
+        step1Description:
+            'Choisissez votre forfait et nous démarrons un serveur dédié pour vous en quelques secondes.',
+        pricingDescription:
+            'Choisissez un forfait adapté à vos besoins. Tarification simple et prévisible.',
+        faq6Answer:
+            'La tarification dépend du forfait que vous choisissez. Nous proposons des niveaux Starter, Pro et Business avec des spécifications claires — vous choisissez ce qui correspond à vos besoins et votre budget.',
     },
     changelog: {
         title: 'Suivez les mises à jour, nouvelles fonctionnalités et améliorations de Clawds.',
@@ -94,6 +110,11 @@ const clawdsFr = {
             "Clawds utilise Google Firebase Authentication pour gérer la connexion. Vous pouvez vous authentifier avec un email, Google ou GitHub. En utilisant ces méthodes, vous acceptez les conditions et politiques de confidentialité respectives de Google et GitHub.",
         liability:
             'Dans la mesure maximale autorisée par la loi, Clawds ne sera pas responsable des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs, ni de toute perte de bénéfices ou de revenus.',
+    },
+    blog: {
+        ctaTitle: 'Déployez votre agent IA en un clic',
+        ctaDescription:
+            'Lancez votre propre agent IA dédié en moins de 60 secondes. Accès root complet, tous les modèles IA, tarification transparente.',
     },
     comparison: {
         metaDescription:

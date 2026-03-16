@@ -15,6 +15,7 @@ import {
     clawProvider,
     clawStatus,
     inputValidation,
+    isClawds,
     OPENCLAW_VERSION
 } from '@openclaw/shared'
 import { getLocale, getBaseDomain, TRUNCATE_LENGTHS } from '@/lib'
@@ -496,14 +497,15 @@ const PlaygroundDetailPanel: FC<PlaygroundDetailPanelProps> = ({
                                     />
                                 )}
 
-                                {claw.ip && (
+                                {!isClawds() && claw.ip && (
                                     <CopyableField
                                         label={t('dashboard.ipAddress')}
                                         value={claw.ip}
                                     />
                                 )}
 
-                                {claw.provider === clawProvider.local &&
+                                {!isClawds() &&
+                                    claw.provider === clawProvider.local &&
                                     claw.port && (
                                         <CopyableField
                                             label={t('dashboard.port')}
@@ -527,48 +529,53 @@ const PlaygroundDetailPanel: FC<PlaygroundDetailPanelProps> = ({
                                     />
                                 )}
 
-                                <CopyableField
-                                    label={t('dashboard.provider')}
-                                    value={
-                                        claw.provider === clawProvider.local
-                                            ? t('createClaw.providerLocal')
-                                            : claw.provider ===
-                                                clawProvider.hetzner
-                                              ? t('createClaw.providerHetzner')
-                                              : claw.provider ===
-                                                  clawProvider.vultr
-                                                ? t('createClaw.providerVultr')
-                                                : t(
-                                                      'createClaw.providerDigitalOcean'
-                                                  )
-                                    }
-                                    icon={
-                                        <ProviderIcon
-                                            provider={claw.provider}
-                                            className='h-3.5 w-3.5 shrink-0'
-                                        />
-                                    }
-                                />
-
-                                {claw.provider !== clawProvider.local && (
+                                {!isClawds() && (
                                     <CopyableField
-                                        label={t('dashboard.location')}
-                                        value={`${flag || ''} ${locationName}`.trim()}
-                                    />
-                                )}
-
-                                {claw.provider !== clawProvider.local && (
-                                    <CopyableField
-                                        label={t('dashboard.plan')}
+                                        label={t('dashboard.provider')}
                                         value={
-                                            plan
-                                                ? `${plan.name.replace(/([A-Za-z])(\d)/, '$1 $2')} (${plan.cpu} vCPU, ${plan.memory}GB RAM, ${plan.disk}GB SSD)`
-                                                : claw.planId
+                                            claw.provider === clawProvider.local
+                                                ? t('createClaw.providerLocal')
+                                                : claw.provider ===
+                                                    clawProvider.hetzner
+                                                  ? t('createClaw.providerHetzner')
+                                                  : claw.provider ===
+                                                      clawProvider.vultr
+                                                    ? t('createClaw.providerVultr')
+                                                    : t(
+                                                          'createClaw.providerDigitalOcean'
+                                                      )
+                                        }
+                                        icon={
+                                            <ProviderIcon
+                                                provider={claw.provider}
+                                                className='h-3.5 w-3.5 shrink-0'
+                                            />
                                         }
                                     />
                                 )}
 
-                                {claw.provider !== clawProvider.local &&
+                                {!isClawds() &&
+                                    claw.provider !== clawProvider.local && (
+                                        <CopyableField
+                                            label={t('dashboard.location')}
+                                            value={`${flag || ''} ${locationName}`.trim()}
+                                        />
+                                    )}
+
+                                {!isClawds() &&
+                                    claw.provider !== clawProvider.local && (
+                                        <CopyableField
+                                            label={t('dashboard.plan')}
+                                            value={
+                                                plan
+                                                    ? `${plan.name.replace(/([A-Za-z])(\d)/, '$1 $2')} (${plan.cpu} vCPU, ${plan.memory}GB RAM, ${plan.disk}GB SSD)`
+                                                    : claw.planId
+                                            }
+                                        />
+                                    )}
+
+                                {!isClawds() &&
+                                    claw.provider !== clawProvider.local &&
                                     monthlyPrice && (
                                         <CopyableField
                                             label={t('dashboard.planCost')}
@@ -580,7 +587,7 @@ const PlaygroundDetailPanel: FC<PlaygroundDetailPanelProps> = ({
                                         />
                                     )}
 
-                                {claw.providerServerId && (
+                                {!isClawds() && claw.providerServerId && (
                                     <CopyableField
                                         label={t('dashboard.serverId')}
                                         value={`#${claw.providerServerId}`}
@@ -699,7 +706,10 @@ const PlaygroundDetailPanel: FC<PlaygroundDetailPanelProps> = ({
                     )}
 
                     {activeTab === 'skills' && (
-                        <PlaygroundSkillsContent clawId={claw.id} />
+                        <PlaygroundSkillsContent
+                            clawId={claw.id}
+                            readOnly={readOnly}
+                        />
                     )}
 
                     {activeTab === 'versions' && (

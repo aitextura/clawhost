@@ -4,18 +4,23 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import PATHS from '@/lib/paths'
+import { brand } from '@openclaw/shared'
 
 const DIST = path.resolve(import.meta.dirname, '../dist')
 const CONTENT = path.resolve(import.meta.dirname, '../content/posts')
-const SITE_URL = 'https://clawhost.cloud'
+const SITE_URL = `https://${brand.domain}`
 
 const staticRoutes: SitemapRoute[] = [
     { path: PATHS.HOME, priority: '1.0', changefreq: 'weekly' },
     { path: `/${PATHS.TERMS}`, priority: '0.3', changefreq: 'yearly' },
     { path: `/${PATHS.PRIVACY}`, priority: '0.3', changefreq: 'yearly' },
-    { path: `/${PATHS.BLOG}`, priority: '0.8', changefreq: 'weekly' },
+    ...(brand.features.showBlog
+        ? [{ path: `/${PATHS.BLOG}`, priority: '0.8', changefreq: 'weekly' } as SitemapRoute]
+        : []),
     { path: `/${PATHS.CHANGELOG}`, priority: '0.6', changefreq: 'weekly' },
-    { path: `/${PATHS.COMPARE}`, priority: '0.7', changefreq: 'monthly' }
+    ...(brand.features.showComparison
+        ? [{ path: `/${PATHS.COMPARE}`, priority: '0.7', changefreq: 'monthly' } as SitemapRoute]
+        : [])
 ]
 
 const mdxFiles = fs.readdirSync(CONTENT).filter((f) => f.endsWith('.mdx'))
@@ -28,14 +33,8 @@ const postSlugs = mdxFiles.map((file) => {
 
 const today = new Date().toISOString().split('T')[0]
 
-const urls = [
-    ...staticRoutes.map((route) => ({
-        loc: `${SITE_URL}${route.path}`,
-        lastmod: today,
-        priority: route.priority,
-        changefreq: route.changefreq
-    })),
-    ...postSlugs.map((slug) => {
+const blogUrls = brand.features.showBlog
+    ? postSlugs.map((slug) => {
         const raw = fs.readFileSync(
             path.join(
                 CONTENT,
@@ -58,6 +57,16 @@ const urls = [
             changefreq: 'monthly'
         }
     })
+    : []
+
+const urls = [
+    ...staticRoutes.map((route) => ({
+        loc: `${SITE_URL}${route.path}`,
+        lastmod: today,
+        priority: route.priority,
+        changefreq: route.changefreq
+    })),
+    ...blogUrls
 ]
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -76,3 +85,15 @@ ${urls
 
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemap)
 console.log(`Generated sitemap.xml with ${urls.length} URLs.`)
+
+const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /claws
+Disallow: /ssh-keys
+Disallow: /account
+Disallow: /billing
+Disallow: /login
+Sitemap: ${SITE_URL}/sitemap.xml`
+
+fs.writeFileSync(path.join(DIST, 'robots.txt'), robotsTxt)
+console.log(`Generated robots.txt for ${brand.domain}.`)

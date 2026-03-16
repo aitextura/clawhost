@@ -10,9 +10,6 @@ const clawdsDe = {
     setup: {
         welcomeTitle: 'Willkommen bei Clawds',
     },
-    footer: {
-        copyright: 'Clawds. Alle Rechte vorbehalten.',
-    },
     emails: {
         otpSubject: 'Dein Clawds-Anmeldecode',
         otpPreview: 'Dein Clawds-Anmeldecode: {{code}}',
@@ -40,7 +37,20 @@ const clawdsDe = {
     tiers: {
         tokensPerDay: 'Tokens/Tag',
     },
+    footer: {
+        copyright: 'Clawds. Alle Rechte vorbehalten.',
+        poweredBy: 'Betrieben von AI TEXTURA',
+        brandDescription:
+            'KI-Agenten in der Cloud mit einem Klick bereitstellen. Dedizierte Ressourcen, volle Privatsphäre, keine geteilte Infrastruktur.',
+        productDescription:
+            'KI-Agenten in der Cloud mit einem Klick bereitstellen — erstelle, verbinde und skaliere deine KI-Agenten schneller mit Clawds.',
+    },
     landing: {
+        title: 'KI-Agenten bereitstellen. Ein Klick. Fertig.',
+        description:
+            'KI-Agenten in der Cloud mit einem Klick bereitstellen. Dedizierte Server, voller Root-Zugriff und transparente Preise.',
+        heroDescription:
+            'KI-Agenten in der Cloud mit einem Klick bereitstellen — erstelle, verbinde und skaliere deine KI-Agenten schneller mit Clawds.',
         whyClawHost: 'Alles-in-Einem Funktionen',
         whyClawds: 'Warum Clawds?',
         clawHostControl: 'Clawds Steuerung',
@@ -67,6 +77,12 @@ const clawdsDe = {
             'Clawds ist eine Plattform, die OpenClaw für alle zugänglich macht. Sie ermöglicht es sowohl nicht-technischen Nutzern als auch Entwicklern, OpenClaw ohne eigene Infrastruktur zu betreiben. Wir kümmern uns um Server, Verfügbarkeit, Sicherheit und Wartung – du nutzt einfach OpenClaw.',
         faq2Answer:
             'Im Gegensatz zu gehosteten KI-Tools gibt dir Clawds einen echten Server mit installiertem OpenClaw. Du besitzt die Infrastruktur, kontrollierst alles und bist nicht durch eine gemeinsame Plattform eingeschränkt.',
+        step1Description:
+            'Wähle deinen Tarif und wir starten einen dedizierten Server für dich in Sekunden.',
+        pricingDescription:
+            'Wähle einen Tarif, der zu deinen Anforderungen passt. Einfache, vorhersehbare Preise.',
+        faq6Answer:
+            'Die Preise richten sich nach dem gewählten Tarif. Wir bieten Starter-, Pro- und Business-Tarife mit klaren Spezifikationen — du wählst, was zu deinen Bedürfnissen und deinem Budget passt.',
     },
     changelog: {
         title: 'Verfolge Updates, neue Funktionen und Verbesserungen von Clawds.',
@@ -93,6 +109,11 @@ const clawdsDe = {
             'Clawds nutzt Google Firebase Authentication zur Anmeldung. Du kannst dich per E-Mail, Google oder GitHub authentifizieren. Durch die Nutzung dieser Methoden stimmst du den jeweiligen Nutzungsbedingungen und Datenschutzrichtlinien von Google und GitHub zu.',
         liability:
             'Im größtmöglichen gesetzlich zulässigen Umfang haftet Clawds nicht für indirekte, zufällige, besondere, Folge- oder Strafschäden oder den Verlust von Gewinnen oder Einnahmen.',
+    },
+    blog: {
+        ctaTitle: 'Starte deinen KI-Agenten mit einem Klick',
+        ctaDescription:
+            'Bringe deinen eigenen dedizierten KI-Agenten in unter 60 Sekunden zum Laufen. Voller Root-Zugriff, alle KI-Modelle, transparente Preise.',
     },
     comparison: {
         metaDescription:

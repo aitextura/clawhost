@@ -154,6 +154,7 @@ const de: Translations = {
     footer: {
         website: 'Webseite',
         copyright: 'ClawHost. Alle Rechte vorbehalten.',
+        poweredBy: '',
         termsOfService: 'Nutzungsbedingungen',
         privacyPolicy: 'Datenschutzerklärung',
         getInTouch: 'Kontakt',

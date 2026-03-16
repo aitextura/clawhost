@@ -20,10 +20,49 @@ const Logo: FC<LogoProps> = ({ to }): ReactNode => {
             <Link
                 to={destination}
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className='font-clash text-xl font-bold'
+                className='flex items-center gap-2 transition hover:opacity-80'
                 aria-label={brand.name}
             >
-                {brand.name}
+                <svg
+                    height='36'
+                    viewBox='0 0 220 56'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                    role='img'
+                    aria-label={brand.name}
+                >
+                    <defs>
+                        <linearGradient id='clawGrad' x1='0' y1='0' x2='0' y2='1'>
+                            <stop offset='0%' stopColor='#5CE0D6' />
+                            <stop offset='100%' stopColor='#3BBEB5' />
+                        </linearGradient>
+                        <linearGradient id='cloudGrad' x1='0' y1='0' x2='0' y2='1'>
+                            <stop offset='0%' stopColor='#E8F8F7' />
+                            <stop offset='100%' stopColor='#B2EDEA' />
+                        </linearGradient>
+                    </defs>
+
+                    <g transform='translate(4, 6)'>
+                        <ellipse cx='24' cy='30' rx='20' ry='10' fill='url(#cloudGrad)' />
+                        <circle cx='14' cy='26' r='8' fill='url(#cloudGrad)' />
+                        <circle cx='32' cy='24' r='9' fill='url(#cloudGrad)' />
+                        <circle cx='22' cy='22' r='10' fill='url(#cloudGrad)' />
+
+                        <circle cx='19' cy='24' r='2.5' fill='white' />
+                        <circle cx='29' cy='24' r='2.5' fill='white' />
+                        <circle cx='19.5' cy='24' r='1.3' fill='#2c3e50' />
+                        <circle cx='29.5' cy='24' r='1.3' fill='#2c3e50' />
+                        <circle cx='19.9' cy='23.4' r='0.5' fill='white' />
+                        <circle cx='29.9' cy='23.4' r='0.5' fill='white' />
+
+                        <path d='M22 28 Q24 30 26 28' stroke='#3BBEB5' strokeWidth='1' fill='none' strokeLinecap='round' />
+                    </g>
+
+                    <text x='56' y='36' fontFamily='inherit' fontWeight='700' fontSize='26'>
+                        <tspan fill='#4ecdc4'>Claw</tspan>
+                        <tspan fill='#3BBEB5'>ds</tspan>
+                    </text>
+                </svg>
             </Link>
         )
     }

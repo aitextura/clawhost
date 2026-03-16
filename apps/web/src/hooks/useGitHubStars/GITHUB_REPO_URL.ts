@@ -1,3 +1,5 @@
-const GITHUB_REPO_URL = 'https://github.com/bfzli/clawhost'
+import { brand } from '@openclaw/shared'
+
+const GITHUB_REPO_URL = brand.socialLinks.github
 
 export default GITHUB_REPO_URL

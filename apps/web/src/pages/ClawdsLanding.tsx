@@ -43,7 +43,6 @@ import { TUTORIAL_URL } from '@/lib/links'
 import { useBrand } from '@/components/clawds'
 import {
     ShieldCheckIcon,
-    GlobeIcon,
     ClockIcon,
     TerminalIcon,
     LockIcon,
@@ -113,20 +112,12 @@ const getFaqs = (): Faq[] => [
         answer: t('landing.faq4Answer')
     },
     {
-        question: t('landing.faq5Question'),
-        answer: t('landing.faq5Answer')
-    },
-    {
         question: t('landing.faq6Question'),
         answer: t('landing.faq6Answer')
     },
     {
         question: t('landing.faq7Question'),
         answer: t('landing.faq7Answer')
-    },
-    {
-        question: t('landing.faq8Question'),
-        answer: t('landing.faq8Answer')
     }
 ]
 
@@ -333,7 +324,7 @@ const ClawdsLanding: FC = (): ReactNode => {
                     '@type': 'Organization',
                     name: brand.name,
                     url: `https://${getBaseDomain()}`,
-                    logo: `https://cdn.${brand.domain}/assets/${brand.id}-logo-light.png`,
+                    logo: `https://${brand.domain}/logo.svg`,
                     sameAs: [
                         brand.socialLinks.twitter || TWITTER_URL,
                         FACEBOOK_URL,
@@ -875,13 +866,6 @@ const ClawdsLanding: FC = (): ReactNode => {
                                 description: t('landing.fullSpeedDescription')
                             },
                             {
-                                icon: GlobeIcon,
-                                title: t('landing.globalLocations'),
-                                description: t(
-                                    'landing.globalLocationsDescription'
-                                )
-                            },
-                            {
                                 icon: TerminalIcon,
                                 title: t('landing.fullSshAccess'),
                                 description: t(
@@ -1294,14 +1278,10 @@ const ClawdsLanding: FC = (): ReactNode => {
                                 <tr className='border-border bg-foreground/[0.02] border-b'>
                                     <th className='px-6 py-4'>
                                         <div className='flex items-center justify-center'>
-                                            <img
-                                                src={`https://cdn.${brand.domain}/assets/${brand.id}-logo-light.png`}
-                                                alt={brand.name}
-                                                className='h-6'
-                                                loading='lazy'
-                                                width={120}
-                                                height={24}
-                                            />
+                                            <span className='font-clash text-lg font-bold'>
+                                                <span className='text-[#4ecdc4]'>Claw</span>
+                                                <span className='text-[#3BBEB5]'>ds</span>
+                                            </span>
                                         </div>
                                     </th>
                                     <th className='px-6 py-4 text-center'>
@@ -1490,28 +1470,6 @@ const ClawdsLanding: FC = (): ReactNode => {
                                             <CheckIcon className='h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400' />
                                             <span className='text-foreground'>
                                                 {t(
-                                                    'landing.comparisonOpenSourceUs'
-                                                )}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td className='px-6 py-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <XIcon className='h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400' />
-                                            <span className='text-muted-foreground'>
-                                                {t(
-                                                    'landing.comparisonOpenSourceOthers'
-                                                )}
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='px-6 py-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <CheckIcon className='h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400' />
-                                            <span className='text-foreground'>
-                                                {t(
                                                     'landing.comparisonExportUs'
                                                 )}
                                             </span>
@@ -1523,28 +1481,6 @@ const ClawdsLanding: FC = (): ReactNode => {
                                             <span className='text-muted-foreground'>
                                                 {t(
                                                     'landing.comparisonExportOthers'
-                                                )}
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr className='bg-foreground/[0.01]'>
-                                    <td className='px-6 py-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <CheckIcon className='h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400' />
-                                            <span className='text-foreground'>
-                                                {t(
-                                                    'landing.comparisonProvidersUs'
-                                                )}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td className='px-6 py-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <XIcon className='h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400' />
-                                            <span className='text-muted-foreground'>
-                                                {t(
-                                                    'landing.comparisonProvidersOthers'
                                                 )}
                                             </span>
                                         </div>
@@ -1617,20 +1553,22 @@ const ClawdsLanding: FC = (): ReactNode => {
                             </tbody>
                         </table>
                     </div>
-                    <Link
-                        to={ROUTES.COMPARE}
-                        className='border-border hover:border-foreground/20 bg-foreground/[0.02] mt-6 flex items-center justify-between rounded-xl border px-6 py-5 transition'
-                    >
-                        <div>
-                            <p className='text-foreground font-semibold'>
-                                {t('landing.seeFullComparison')}
-                            </p>
-                            <p className='text-muted-foreground mt-1 text-sm'>
-                                {t('landing.comparisonCtaText')}
-                            </p>
-                        </div>
-                        <ArrowRightIcon className='text-foreground h-5 w-5 flex-shrink-0' />
-                    </Link>
+                    {brand.features.showComparison && (
+                        <Link
+                            to={ROUTES.COMPARE}
+                            className='border-border hover:border-foreground/20 bg-foreground/[0.02] mt-6 flex items-center justify-between rounded-xl border px-6 py-5 transition'
+                        >
+                            <div>
+                                <p className='text-foreground font-semibold'>
+                                    {t('landing.seeFullComparison')}
+                                </p>
+                                <p className='text-muted-foreground mt-1 text-sm'>
+                                    {t('landing.comparisonCtaText')}
+                                </p>
+                            </div>
+                            <ArrowRightIcon className='text-foreground h-5 w-5 flex-shrink-0' />
+                        </Link>
+                    )}
                 </div>
             </section>
 

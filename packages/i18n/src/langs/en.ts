@@ -152,6 +152,7 @@ const en = {
     footer: {
         website: 'Website',
         copyright: 'ClawHost. All rights reserved.',
+        poweredBy: '',
         termsOfService: 'Terms of Service',
         privacyPolicy: 'Privacy Policy',
         getInTouch: 'Get in Touch',

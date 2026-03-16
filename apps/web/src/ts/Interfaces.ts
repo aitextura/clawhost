@@ -1268,6 +1268,7 @@ export interface ChannelFieldDefinition {
 export interface PlaygroundSkillsContentProps {
     clawId: string
     agentId?: string
+    readOnly?: boolean
 }
 
 export interface ClawHubSearchResult {

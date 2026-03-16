@@ -7,7 +7,7 @@ import { ScrollToTop, Toast, ProtectedRoute } from '@/components'
 import { TooltipProvider } from '@/components/ui'
 import { ROUTES } from '@/lib'
 import { useThemeEffect, useLanguageEffect } from '@/hooks'
-import { isClawds } from '@openclaw/shared'
+import { isClawds, brand } from '@openclaw/shared'
 
 const Go = lazy(() => import('@/pages/Go'))
 const Landing = lazy(() =>
@@ -43,7 +43,7 @@ const App: FC = (): ReactNode => {
                 }>
                     <Routes>
                         <Route path={ROUTES.HOME} element={<Landing />} />
-                        <Route path={ROUTES.GO} element={<Go />} />
+                        {brand.features.showGo && <Route path={ROUTES.GO} element={<Go />} />}
                         <Route path={ROUTES.LOGIN} element={<Login />} />
                         <Route path={ROUTES.TERMS} element={<Terms />} />
                         <Route path={ROUTES.PRIVACY} element={<Privacy />} />
@@ -53,7 +53,7 @@ const App: FC = (): ReactNode => {
                         />
                         <Route path={ROUTES.BLOG} element={<Blog />} />
                         <Route path={ROUTES.BLOG_POST} element={<BlogPost />} />
-                        <Route path={ROUTES.COMPARE} element={<Compare />} />
+                        {brand.features.showComparison && <Route path={ROUTES.COMPARE} element={<Compare />} />}
                         <Route
                             path={ROUTES.CLAWS}
                             element={

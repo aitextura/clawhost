@@ -3,6 +3,7 @@ import type { FC, MouseEvent, ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { t } from '@openclaw/i18n'
+import { isClawds, brand } from '@openclaw/shared'
 import { Logo, TrustMrrBadge } from '@/components'
 import { ROUTES } from '@/lib'
 import { GITHUB_REPO_URL } from '@/hooks'
@@ -79,92 +80,108 @@ const LandingFooter: FC = (): ReactNode => {
                         <p className='text-muted-foreground mt-4 max-w-sm text-[15.5px]'>
                             {t('footer.productDescription')}
                         </p>
-                        <div className='mt-6'>
-                            <TrustMrrBadge />
-                        </div>
-                        <div className='mt-6 flex items-center gap-3'>
-                            <a
-                                href={GITHUB_REPO_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaGithub')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <GithubLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                            <a
-                                href={TWITTER_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaX')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <XLogoIcon className='h-5 w-5' weight='fill' />
-                            </a>
-                            <a
-                                href={FACEBOOK_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaFacebook')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <FacebookLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                            <a
-                                href={INSTAGRAM_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaInstagram')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <InstagramLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                            <a
-                                href={THREADS_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaThreads')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <ThreadsLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                            <a
-                                href={YOUTUBE_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaYoutube')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <YoutubeLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                            <a
-                                href={TIKTOK_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('footer.ariaTiktok')}
-                                className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
-                            >
-                                <TiktokLogoIcon
-                                    className='h-5 w-5'
-                                    weight='fill'
-                                />
-                            </a>
-                        </div>
+                        {!isClawds() && (
+                            <div className='mt-6'>
+                                <TrustMrrBadge />
+                            </div>
+                        )}
+                        {!isClawds() && (
+                            <div className='mt-6 flex items-center gap-3'>
+                                <a
+                                    href={GITHUB_REPO_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaGithub')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <GithubLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                                <a
+                                    href={TWITTER_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaX')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <XLogoIcon className='h-5 w-5' weight='fill' />
+                                </a>
+                                <a
+                                    href={FACEBOOK_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaFacebook')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <FacebookLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                                <a
+                                    href={INSTAGRAM_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaInstagram')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <InstagramLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                                <a
+                                    href={THREADS_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaThreads')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <ThreadsLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                                <a
+                                    href={YOUTUBE_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaYoutube')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <YoutubeLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                                <a
+                                    href={TIKTOK_URL}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={t('footer.ariaTiktok')}
+                                    className='bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground rounded-lg p-2 transition'
+                                >
+                                    <TiktokLogoIcon
+                                        className='h-5 w-5'
+                                        weight='fill'
+                                    />
+                                </a>
+                            </div>
+                        )}
+                        {isClawds() && (
+                            <p className='text-muted-foreground mt-6 text-sm'>
+                                <a
+                                    href='https://aitextura.com'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='hover:text-foreground transition'
+                                >
+                                    {t('footer.poweredBy')}
+                                </a>
+                            </p>
+                        )}
                         <div className='mt-5 hidden items-center gap-3'>
                             <a
                                 href='#'
@@ -272,14 +289,16 @@ const LandingFooter: FC = (): ReactNode => {
                                     {t('footer.blog')}
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    to={ROUTES.COMPARE}
-                                    className={pageClass(ROUTES.COMPARE)}
-                                >
-                                    {t('footer.compare')}
-                                </Link>
-                            </li>
+                            {brand.features.showComparison && (
+                                <li>
+                                    <Link
+                                        to={ROUTES.COMPARE}
+                                        className={pageClass(ROUTES.COMPARE)}
+                                    >
+                                        {t('footer.compare')}
+                                    </Link>
+                                </li>
+                            )}
                             <li>
                                 <Link
                                     to={ROUTES.CHANGELOG}

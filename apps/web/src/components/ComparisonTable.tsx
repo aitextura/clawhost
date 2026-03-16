@@ -4,6 +4,7 @@ import type { ComparisonTableProps } from '@/ts/Interfaces'
 import { Link } from 'react-router-dom'
 import { CheckIcon, XIcon, ArrowRightIcon } from '@phosphor-icons/react'
 import { t } from '@openclaw/i18n'
+import { brand } from '@openclaw/shared'
 import { Badge } from '@/components/ui'
 import { ROUTES } from '@/lib'
 
@@ -36,7 +37,7 @@ const ComparisonTable: FC<ComparisonTableProps> = ({ badge, heading, description
                                 <th className='px-6 py-4'>
                                     <div className='flex items-center justify-center gap-2'>
                                         <img
-                                            src='https://cdn.clawhost.cloud/assets/clawhost-logo-light.png'
+                                            src={`https://cdn.${brand.domain}/assets/clawhost-logo-light.png`}
                                             alt={t('common.brandName')}
                                             className='h-6'
                                             loading='lazy'
@@ -84,7 +85,7 @@ const ComparisonTable: FC<ComparisonTableProps> = ({ badge, heading, description
                         </tbody>
                     </table>
                 </div>
-                {showFullComparisonLink && (
+                {showFullComparisonLink && brand.features.showComparison && (
                     <Link
                         to={ROUTES.COMPARE}
                         className='border-border hover:border-foreground/20 bg-foreground/[0.02] mt-6 flex items-center justify-between rounded-xl border px-6 py-5 transition'

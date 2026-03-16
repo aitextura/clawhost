@@ -11,6 +11,7 @@ import {
     PageTitle,
     JsonLd
 } from '@/components'
+import { brand } from '@openclaw/shared'
 import { allPosts } from '@/lib/blog'
 import { PATHS, getBaseDomain } from '@/lib'
 
@@ -26,7 +27,7 @@ const Blog: FC = (): ReactNode => {
                 data={{
                     '@context': 'https://schema.org',
                     '@type': 'Blog',
-                    name: 'ClawHost Blog',
+                    name: `${brand.name} Blog`,
                     description: t('blog.description'),
                     url: `https://${getBaseDomain()}/${PATHS.BLOG}`
                 }}

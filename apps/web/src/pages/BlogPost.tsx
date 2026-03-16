@@ -8,6 +8,7 @@ import {
     CalendarBlankIcon,
     ClockIcon
 } from '@phosphor-icons/react'
+import { brand } from '@openclaw/shared'
 import {
     BlogCTA,
     Header,
@@ -92,10 +93,10 @@ const BlogPost: FC = (): ReactNode => {
                     url: postUrl,
                     publisher: {
                         '@type': 'Organization',
-                        name: 'ClawHost',
+                        name: brand.name,
                         logo: {
                             '@type': 'ImageObject',
-                            url: 'https://cdn.clawhost.cloud/assets/clawhost-logo-light.png'
+                            url: `https://cdn.${brand.domain}/assets/clawhost-logo-light.png`
                         }
                     },
                     mainEntityOfPage: {

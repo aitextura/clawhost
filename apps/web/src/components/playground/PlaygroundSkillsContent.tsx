@@ -34,9 +34,18 @@ import { useUIStore } from '@/lib/store'
 
 const PAGE_SIZE = 50
 
+const MOCK_SKILLS: BundledSkillInfo[] = [
+    { name: 'Web Search', description: 'Search the web for real-time information', enabled: true },
+    { name: 'Calendar', description: 'Manage events and scheduling', enabled: true },
+    { name: 'Email', description: 'Send and receive email messages', enabled: false },
+    { name: 'File Manager', description: 'Read, write and organize files', enabled: true },
+    { name: 'Code Interpreter', description: 'Execute code in a sandboxed environment', enabled: false }
+]
+
 const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
     clawId,
-    agentId
+    agentId,
+    readOnly
 }): ReactNode => {
     const isAgentMode = !!agentId
     const [skills, setSkills] = useState<BundledSkillInfo[]>([])
@@ -70,6 +79,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
     const { data: clawSkillsData, isLoading: isClawSkillsLoading } = useQuery({
         queryKey: clawQueryKey,
         queryFn: () => api.getClawSkills(clawId),
+        enabled: !readOnly,
         staleTime: 0,
         gcTime: 0,
         retry: 1
@@ -79,7 +89,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
         {
             queryKey: agentQueryKey,
             queryFn: () => api.getAgentSkills(clawId, agentId!),
-            enabled: isAgentMode,
+            enabled: isAgentMode && !readOnly,
             staleTime: 0,
             gcTime: 0,
             retry: 1
@@ -87,7 +97,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
     )
 
     const isBundledLoading =
-        isClawSkillsLoading || (isAgentMode && isAgentSkillsLoading)
+        !readOnly && (isClawSkillsLoading || (isAgentMode && isAgentSkillsLoading))
 
     useEffect(() => {
         if (clawSkillsData && !isAgentMode) {
@@ -107,7 +117,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
         [clawSkillsData]
     )
 
-    const displaySkills = isAgentMode ? skillsList : skills
+    const displaySkills = readOnly ? MOCK_SKILLS : isAgentMode ? skillsList : skills
 
     const filteredBundledSkills = useMemo(() => {
         if (!search.trim()) return displaySkills
@@ -135,7 +145,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
                 cursor: pageParam || undefined,
                 agentId
             }),
-        enabled: !isBundledLoading,
+        enabled: !readOnly && !isBundledLoading,
         initialPageParam: null as string | null,
         getNextPageParam: (lastPage) =>
             lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
@@ -148,6 +158,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
     const { data: installedData } = useQuery({
         queryKey: installedKey,
         queryFn: () => api.getClawHubInstalled(clawId, agentId),
+        enabled: !readOnly,
         staleTime: 0,
         gcTime: 0,
         retry: 1
@@ -156,6 +167,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
     const { data: updatesData } = useQuery({
         queryKey: updatesKey,
         queryFn: () => api.checkClawHubUpdates(clawId, agentId),
+        enabled: !readOnly,
         staleTime: 0,
         gcTime: 0,
         retry: 1
@@ -456,7 +468,7 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
         [isAgentMode, installedSet]
     )
 
-    const isClawHubFirstLoad = !browseData && !isBrowseError
+    const isClawHubFirstLoad = !readOnly && !browseData && !isBrowseError
     const hasBundledItems = filteredBundledSkills.length > 0
     const hasClawHubItems =
         !isClawHubFirstLoad && !isBrowseError && clawHubSkills.length > 0
@@ -526,31 +538,36 @@ const PlaygroundSkillsContent: FC<PlaygroundSkillsContentProps> = ({
                                                 </TruncateTooltip>
                                             )}
                                         </div>
-                                        <button
-                                            onClick={() =>
-                                                handleBundledAction(skill.name)
-                                            }
-                                            disabled={!!pendingSkill}
-                                            className='bg-foreground/5 text-foreground/80 hover:bg-foreground/10 ml-3 flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'
-                                        >
-                                            {isPending ? (
-                                                <CircleNotchIcon className='h-3 w-3 animate-spin' />
-                                            ) : active ? (
-                                                <>
-                                                    <TrashIcon className='h-3 w-3' />
-                                                    {t(
-                                                        'playground.clawHubRemove'
-                                                    )}
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <DownloadSimpleIcon className='h-3 w-3' />
-                                                    {t(
-                                                        'playground.clawHubInstall'
-                                                    )}
-                                                </>
-                                            )}
-                                        </button>
+                                        {!readOnly && (
+                                            <button
+                                                onClick={() =>
+                                                    handleBundledAction(skill.name)
+                                                }
+                                                disabled={!!pendingSkill}
+                                                className='bg-foreground/5 text-foreground/80 hover:bg-foreground/10 ml-3 flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+                                            >
+                                                {isPending ? (
+                                                    <CircleNotchIcon className='h-3 w-3 animate-spin' />
+                                                ) : active ? (
+                                                    <>
+                                                        <TrashIcon className='h-3 w-3' />
+                                                        {t(
+                                                            'playground.clawHubRemove'
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <DownloadSimpleIcon className='h-3 w-3' />
+                                                        {t(
+                                                            'playground.clawHubInstall'
+                                                        )}
+                                                    </>
+                                                )}
+                                            </button>
+                                        )}
+                                        {readOnly && (
+                                            <span className={`ml-3 inline-flex h-2 w-2 shrink-0 rounded-full ${active ? 'bg-emerald-500' : 'bg-foreground/20'}`} />
+                                        )}
                                     </div>
                                 )
                             })}

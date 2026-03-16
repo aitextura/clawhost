@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select'
 import { PATHS, getBaseDomain } from '@/lib'
 import { getCompareData } from '@/data'
+import { brand } from '@openclaw/shared'
 import { GITHUB_REPO_URL } from '@/hooks'
 import { CheckIcon, XIcon, MinusIcon } from '@phosphor-icons/react'
 
@@ -284,10 +285,10 @@ const Compare: FC = (): ReactNode => {
                 <p className='text-muted-foreground/60 mt-6 text-center text-sm'>
                     {t('compare.disclaimer')}{' '}
                     <a
-                        href='mailto:support@clawhost.cloud'
+                        href={`mailto:${brand.supportEmail}`}
                         className='text-foreground underline'
                     >
-                        support@clawhost.cloud
+                        {brand.supportEmail}
                     </a>{' '}
                     {t('compare.disclaimerOr')}{' '}
                     <a

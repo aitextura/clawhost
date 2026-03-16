@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react'
 
 import { Link } from 'react-router-dom'
 import { t } from '@openclaw/i18n'
+import { brand } from '@openclaw/shared'
 import { ROUTES } from '@/lib'
 import usePreferencesStore from '@/lib/store/usePreferencesStore'
 
@@ -9,6 +10,8 @@ const ProductSwitcher: FC = (): ReactNode => {
     const product = usePreferencesStore((s) => s.product)
     const setProduct = usePreferencesStore((s) => s.setProduct)
     const isGo = product === 'go'
+
+    if (!brand.features.showGo) return null
 
     return (
         <div className='bg-foreground/5 border-border flex items-center gap-0.5 rounded-lg border p-0.5'>

@@ -1,7 +1,28 @@
 import type { FC, ReactNode } from 'react'
 import type { ClawMascotProps } from '@/ts/Interfaces'
 
+import { isClawds } from '@openclaw/shared'
+
 const ClawMascotOutline: FC<ClawMascotProps> = ({ className }): ReactNode => {
+    if (isClawds()) {
+        return (
+            <svg
+                viewBox='0 0 48 36'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+                className={className}
+            >
+                <ellipse cx='24' cy='24' rx='18' ry='9' stroke='currentColor' strokeWidth='2.5' />
+                <circle cx='14' cy='20' r='7' stroke='currentColor' strokeWidth='2.5' />
+                <circle cx='32' cy='18' r='8' stroke='currentColor' strokeWidth='2.5' />
+                <circle cx='22' cy='16' r='9' stroke='currentColor' strokeWidth='2.5' />
+                <circle cx='19' cy='18' r='1.5' fill='currentColor' />
+                <circle cx='27' cy='18' r='1.5' fill='currentColor' />
+                <path d='M21 22 Q24 24 27 22' stroke='currentColor' strokeWidth='1.5' fill='none' strokeLinecap='round' />
+            </svg>
+        )
+    }
+
     return (
         <svg
             viewBox='0 0 114 109'

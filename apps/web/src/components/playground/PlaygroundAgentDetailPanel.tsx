@@ -579,6 +579,7 @@ const PlaygroundAgentDetailPanel: FC<PlaygroundAgentDetailPanelProps> = ({
                         <PlaygroundSkillsContent
                             clawId={clawId}
                             agentId={agent.id}
+                            readOnly={readOnly}
                         />
                     )}
 

@@ -12,6 +12,11 @@ const clawdsEn = {
     },
     footer: {
         copyright: 'Clawds. All rights reserved.',
+        poweredBy: 'Powered by AI TEXTURA',
+        brandDescription:
+            'Deploy AI agents in the cloud with one click. Dedicated resources, full privacy, no shared infrastructure.',
+        productDescription:
+            'Deploy AI agents in the cloud with one click — build, connect, and scale your AI agents faster with Clawds.',
     },
     emails: {
         otpSubject: 'Your Clawds sign-in code',
@@ -41,6 +46,11 @@ const clawdsEn = {
         tokensPerDay: 'tokens/day',
     },
     landing: {
+        title: 'Deploy AI Agents. One Click. Done.',
+        description:
+            'Deploy AI agents in the cloud with one click. Dedicated servers, full root access, and transparent pricing.',
+        heroDescription:
+            'Deploy AI agents in the cloud with one click — build, connect, and scale your AI agents faster with Clawds.',
         whyClawHost: 'All-in-One Features',
         whyClawds: 'Why Clawds?',
         clawHostControl: 'Clawds Control',
@@ -62,11 +72,17 @@ const clawdsEn = {
         templateResearchDesc: 'An AI-powered research assistant that analyzes documents, summarizes findings, and generates reports.',
         templateDevOps: 'DevOps Automation',
         templateDevOpsDesc: 'Automate your CI/CD pipeline with an AI agent that monitors, deploys, and troubleshoots.',
+        step1Description:
+            'Choose your plan and we spin up a dedicated server just for you in seconds.',
+        pricingDescription:
+            'Choose a plan that fits your needs. Simple, predictable pricing.',
         faq1Question: 'What is Clawds?',
         faq1Answer:
             'Clawds is a platform built to make OpenClaw accessible to everyone. It lets both non-technical users and developers run OpenClaw without managing infrastructure. We handle servers, uptime, security, and maintenance — you just use OpenClaw.',
         faq2Answer:
             'Unlike hosted AI tools, Clawds gives you a real server with OpenClaw installed. You own the infrastructure, control everything, and aren\'t limited by a shared platform or model.',
+        faq6Answer:
+            'Pricing is based on the plan you select. We offer Starter, Pro, and Business tiers with clear specs — you choose what fits your needs and budget.',
     },
     changelog: {
         title: 'Track updates, new features, and improvements to Clawds.',
@@ -93,6 +109,11 @@ const clawdsEn = {
             'Clawds uses Google Firebase Authentication to manage sign-in. You may authenticate with email, Google, or GitHub. By using these methods, you agree to the respective terms and privacy policies of Google and GitHub. These providers may collect basic information such as your email address, name, and device data.',
         liability:
             'To the maximum extent permitted by law, Clawds shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.',
+    },
+    blog: {
+        ctaTitle: 'Deploy Your AI Agent with One Click',
+        ctaDescription:
+            'Get your own dedicated AI agent running in under 60 seconds. Full root access, all AI models, transparent pricing.',
     },
     comparison: {
         metaDescription:

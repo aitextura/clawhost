@@ -18,6 +18,10 @@ export interface BrandConfig {
         showProviderChoice: boolean
         showBlog: boolean
         showProductHunt: boolean
+        showRevenue: boolean
+        showGo: boolean
+        showComparison: boolean
+        showSelfHosting: boolean
     }
     payment: {
         provider: 'stripe' | 'polar'
@@ -44,7 +48,11 @@ const OPENCLAW_BRAND: BrandConfig = {
         simplifiedPurchase: false,
         showProviderChoice: true,
         showBlog: true,
-        showProductHunt: true
+        showProductHunt: true,
+        showRevenue: true,
+        showGo: true,
+        showComparison: true,
+        showSelfHosting: true
     },
     payment: {
         provider: 'polar',
@@ -71,7 +79,11 @@ const CLAWDS_BRAND: BrandConfig = {
         simplifiedPurchase: true,
         showProviderChoice: false,
         showBlog: false,
-        showProductHunt: false
+        showProductHunt: false,
+        showRevenue: false,
+        showGo: false,
+        showComparison: false,
+        showSelfHosting: false
     },
     payment: {
         provider: 'stripe',

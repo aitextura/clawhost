@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react'
 import type { HeroButtonsProps } from '@/ts/Interfaces'
 
 import { Link } from 'react-router-dom'
+import { brand } from '@openclaw/shared'
 import { Button } from '@/components/ui'
 import { SelfHostButton } from '@/components'
 import { useAuth } from '@/lib/auth'
@@ -34,11 +35,13 @@ const HeroButtons: FC<HeroButtonsProps> = ({
                     {deployLabel}
                 </Link>
             </Button>
-            <SelfHostButton
-                label={githubLabel}
-                showStars={showStars}
-                large={large}
-            />
+            {brand.features.showSelfHosting && (
+                <SelfHostButton
+                    label={githubLabel}
+                    showStars={showStars}
+                    large={large}
+                />
+            )}
         </>
     )
 }

@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useScroll, useTransform } from 'framer-motion'
 import { t } from '@openclaw/i18n'
-import { clawProvider } from '@openclaw/shared'
+import { clawProvider, brand } from '@openclaw/shared'
 import {
     PageTitle,
     Header,
@@ -229,9 +229,9 @@ const Landing: FC = (): ReactNode => {
                 data={{
                     '@context': 'https://schema.org',
                     '@type': 'Organization',
-                    name: 'ClawHost',
+                    name: brand.name,
                     url: `https://${getBaseDomain()}`,
-                    logo: 'https://cdn.clawhost.cloud/assets/clawhost-logo-light.png',
+                    logo: `https://cdn.${brand.domain}/assets/clawhost-logo-light.png`,
                     sameAs: [
                         TWITTER_URL,
                         FACEBOOK_URL,
@@ -246,7 +246,7 @@ const Landing: FC = (): ReactNode => {
                 data={{
                     '@context': 'https://schema.org',
                     '@type': 'WebSite',
-                    name: 'ClawHost',
+                    name: brand.name,
                     url: `https://${getBaseDomain()}`
                 }}
             />
