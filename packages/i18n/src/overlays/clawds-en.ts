@@ -44,6 +44,21 @@ const clawdsEn = {
     },
     tiers: {
         tokensPerDay: 'tokens/day',
+        starter: {
+            name: 'Starter',
+            description: 'Perfect for personal projects and experimentation.',
+            useCase: 'Ideal for hobbyists, students, and personal AI assistants.',
+        },
+        pro: {
+            name: 'Pro',
+            description: 'For professionals who need more power and flexibility.',
+            useCase: 'Great for freelancers, small teams, and production workloads.',
+        },
+        business: {
+            name: 'Business',
+            description: 'Maximum resources for demanding enterprise use cases.',
+            useCase: 'Built for agencies, enterprises, and high-traffic AI deployments.',
+        },
     },
     landing: {
         title: 'Deploy AI Agents. One Click. Done.',
@@ -55,6 +70,8 @@ const clawdsEn = {
         whyClawds: 'Why Clawds?',
         clawHostControl: 'Clawds Control',
         clawdsControl: 'Clawds Control',
+        clawdsControlDescription:
+            'Manage files, updates, channels, variables, skills, and more configuration options directly from the platform.',
         deployClawdsNow: 'Deploy Clawds Now',
         heroStatSeconds: 'Seconds to deploy',
         heroStatFirstAgent: 'Your first AI agent',

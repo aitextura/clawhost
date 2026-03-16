@@ -36,6 +36,21 @@ const clawdsRu = {
     },
     tiers: {
         tokensPerDay: 'токенов/день',
+        starter: {
+            name: 'Starter',
+            description: 'Для личных проектов и экспериментов.',
+            useCase: 'Идеально для хобби, студентов и персональных AI-ассистентов.',
+        },
+        pro: {
+            name: 'Pro',
+            description: 'Для профессионалов, которым нужно больше мощности.',
+            useCase: 'Подходит фрилансерам, небольшим командам и продакшн-задачам.',
+        },
+        business: {
+            name: 'Business',
+            description: 'Максимум ресурсов для требовательных задач.',
+            useCase: 'Для агентств, предприятий и высоконагруженных AI-деплоев.',
+        },
     },
     footer: {
         copyright: 'Clawds. Все права защищены.',
@@ -55,6 +70,8 @@ const clawdsRu = {
         whyClawds: 'Почему Clawds?',
         clawHostControl: 'Управление Clawds',
         clawdsControl: 'Управление Clawds',
+        clawdsControlDescription:
+            'Управляйте файлами, обновлениями, каналами, переменными, навыками и другими настройками прямо из платформы.',
         deployClawdsNow: 'Развернуть Clawds сейчас',
         heroStatSeconds: 'Секунд до деплоя',
         heroStatFirstAgent: 'Ваш первый AI-агент',

@@ -36,6 +36,21 @@ const clawdsDe = {
     },
     tiers: {
         tokensPerDay: 'Tokens/Tag',
+        starter: {
+            name: 'Starter',
+            description: 'Perfekt für persönliche Projekte und Experimente.',
+            useCase: 'Ideal für Hobbyisten, Studenten und persönliche KI-Assistenten.',
+        },
+        pro: {
+            name: 'Pro',
+            description: 'Für Profis, die mehr Leistung und Flexibilität brauchen.',
+            useCase: 'Ideal für Freelancer, kleine Teams und Produktionsworkloads.',
+        },
+        business: {
+            name: 'Business',
+            description: 'Maximale Ressourcen für anspruchsvolle Anwendungsfälle.',
+            useCase: 'Für Agenturen, Unternehmen und KI-Deployments mit hohem Traffic.',
+        },
     },
     footer: {
         copyright: 'Clawds. Alle Rechte vorbehalten.',
@@ -55,6 +70,8 @@ const clawdsDe = {
         whyClawds: 'Warum Clawds?',
         clawHostControl: 'Clawds Steuerung',
         clawdsControl: 'Clawds Steuerung',
+        clawdsControlDescription:
+            'Verwalte Dateien, Updates, Kanäle, Variablen, Fähigkeiten und mehr direkt über die Plattform.',
         deployClawdsNow: 'Clawds jetzt bereitstellen',
         heroStatSeconds: 'Sekunden bis zum Deploy',
         heroStatFirstAgent: 'Dein erster KI-Agent',

@@ -126,7 +126,7 @@ const ClawdsLanding: FC = (): ReactNode => {
     const { hash } = useLocation()
     const { user } = useAuth()
     const { phBannerVisible } = useUIStore()
-    const showTutorialBadge = true
+    const showTutorialBadge = false
     const [videoOpen, setVideoOpen] = useState(false)
     const [openFaq, setOpenFaq] = useState<number | null>(null)
     const [activeSection, setActiveSection] = useState('')

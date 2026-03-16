@@ -37,6 +37,21 @@ const clawdsEs = {
     },
     tiers: {
         tokensPerDay: 'tokens/día',
+        starter: {
+            name: 'Starter',
+            description: 'Perfecto para proyectos personales y experimentación.',
+            useCase: 'Ideal para aficionados, estudiantes y asistentes IA personales.',
+        },
+        pro: {
+            name: 'Pro',
+            description: 'Para profesionales que necesitan más potencia y flexibilidad.',
+            useCase: 'Ideal para freelancers, equipos pequeños y cargas de producción.',
+        },
+        business: {
+            name: 'Business',
+            description: 'Recursos máximos para casos de uso exigentes.',
+            useCase: 'Diseñado para agencias, empresas y despliegues IA de alto tráfico.',
+        },
     },
     footer: {
         copyright: 'Clawds. Todos los derechos reservados.',
@@ -56,6 +71,8 @@ const clawdsEs = {
         whyClawds: '¿Por qué Clawds?',
         clawHostControl: 'Control de Clawds',
         clawdsControl: 'Control de Clawds',
+        clawdsControlDescription:
+            'Gestiona archivos, actualizaciones, canales, variables, habilidades y más directamente desde la plataforma.',
         deployClawdsNow: 'Desplegar Clawds ahora',
         heroStatSeconds: 'Segundos para desplegar',
         heroStatFirstAgent: 'Tu primer agente IA',
