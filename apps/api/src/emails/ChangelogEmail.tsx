@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react'
 import type { ChangelogEmailProps } from '@/ts/Interfaces'
 
 import { t } from '@openclaw/i18n'
+import { brand } from '@openclaw/shared'
 
 import {
     Body,
@@ -129,7 +130,7 @@ const ChangelogEmail: FC<ChangelogEmailProps> = ({
 
                         <Section style={buttonContainer}>
                             <Button
-                                href='https://clawhost.cloud/changelog'
+                                href={`https://${brand.domain}/changelog`}
                                 style={button}
                             >
                                 {t('emails.changelogButton')}
@@ -140,7 +141,7 @@ const ChangelogEmail: FC<ChangelogEmailProps> = ({
                             style={{ ...buttonContainer, marginTop: '12px' }}
                         >
                             <Button
-                                href='https://clawhost.cloud'
+                                href={`https://${brand.domain}`}
                                 style={secondaryButton}
                             >
                                 {t('emails.changelogVisitButton')}

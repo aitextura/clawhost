@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react'
 
 import { t } from '@openclaw/i18n'
+import { brand } from '@openclaw/shared'
 
 import {
     Body,
@@ -56,7 +57,7 @@ const LogsEmail: FC = (): ReactNode => {
 
                         <Section style={buttonContainer}>
                             <Button
-                                href='https://clawhost.cloud'
+                                href={`https://${brand.domain}`}
                                 style={button}
                             >
                                 {t('emails.features.logs.cta')}

@@ -7,7 +7,7 @@ const ClawMascotOutline: FC<ClawMascotProps> = ({ className }): ReactNode => {
     if (isClawds()) {
         return (
             <svg
-                viewBox='0 0 48 36'
+                viewBox='0 0 52 36'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
                 className={className}
@@ -19,6 +19,25 @@ const ClawMascotOutline: FC<ClawMascotProps> = ({ className }): ReactNode => {
                 <circle cx='19' cy='18' r='1.5' fill='currentColor' />
                 <circle cx='27' cy='18' r='1.5' fill='currentColor' />
                 <path d='M21 22 Q24 24 27 22' stroke='currentColor' strokeWidth='1.5' fill='none' strokeLinecap='round' />
+
+                <g transform='translate(37, 18)'>
+                    <path
+                        d='M0 0 C2 -1.5, 4.5 -4, 5.5 -7 C6 -8.5, 5.5 -9.5, 4 -8.5 C2.8 -7.5, 2.2 -5, 2 -3.5'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        fill='none'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                    />
+                    <path
+                        d='M0 0 C2.5 0, 5.5 -1, 7 -4 C7.8 -5.5, 7 -6.5, 5.5 -5.5 C4.2 -4.5, 3.5 -2.5, 3 -1'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        fill='none'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                    />
+                </g>
             </svg>
         )
     }

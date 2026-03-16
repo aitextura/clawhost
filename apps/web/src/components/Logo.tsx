@@ -56,6 +56,26 @@ const Logo: FC<LogoProps> = ({ to }): ReactNode => {
                         <circle cx='29.9' cy='23.4' r='0.5' fill='white' />
 
                         <path d='M22 28 Q24 30 26 28' stroke='#3BBEB5' strokeWidth='1' fill='none' strokeLinecap='round' />
+
+                        <g transform='translate(38, 24)'>
+                            <path
+                                d='M0 0 C2 -1, 5 -3, 6.5 -6 C7.2 -7.5, 7 -9, 5.5 -8.5 C4 -8, 3 -6, 2.5 -4'
+                                stroke='#3BBEB5'
+                                strokeWidth='1.8'
+                                fill='none'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                            />
+                            <path
+                                d='M0 0 C2.5 0, 6 -0.5, 8 -3 C9 -4.5, 8.5 -6, 7 -5.5 C5.5 -5, 4.5 -3, 3.5 -1.5'
+                                stroke='#4ecdc4'
+                                strokeWidth='1.8'
+                                fill='none'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                            />
+                            <circle cx='0' cy='0' r='1.2' fill='#3BBEB5' />
+                        </g>
                     </g>
 
                     <text x='56' y='36' fontFamily='inherit' fontWeight='700' fontSize='26'>

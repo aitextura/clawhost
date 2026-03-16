@@ -3,6 +3,7 @@ import type { MacosDesktopPreviewProps } from '@/ts/Interfaces'
 
 import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
+import { t } from '@openclaw/i18n'
 import {
     EnvelopeSimpleIcon,
     GlobeSimpleIcon,
@@ -40,7 +41,7 @@ const MacosDesktopPreview: FC<MacosDesktopPreviewProps> = ({ previewRef, preview
                 >
                     <div className='flex items-center justify-between bg-black/30 px-4 py-1 backdrop-blur-xl'>
                         <div className='flex items-center gap-4'>
-                            <span className='text-[11px] font-semibold text-white/90'>ClawHost Go</span>
+                            <span className='text-[11px] font-semibold text-white/90'>{t('go.pageTitle')}</span>
                             <span className='hidden text-[11px] text-white/60 sm:inline'>File</span>
                             <span className='hidden text-[11px] text-white/60 sm:inline'>Edit</span>
                             <span className='hidden text-[11px] text-white/60 sm:inline'>View</span>
@@ -64,7 +65,7 @@ const MacosDesktopPreview: FC<MacosDesktopPreviewProps> = ({ previewRef, preview
                                     <div className='h-3 w-3 rounded-full bg-[#28c840]' />
                                 </div>
                                 <span className='flex-1 text-center text-xs text-white/50'>
-                                    ClawHost Go
+                                    {t('go.pageTitle')}
                                 </span>
                                 <div className='w-[54px]' />
                             </div>
@@ -74,7 +75,7 @@ const MacosDesktopPreview: FC<MacosDesktopPreviewProps> = ({ previewRef, preview
                                         <div className='border-border bg-muted/50 h-3 w-3 animate-pulse rounded-full' />
                                     </div>
                                 }>
-                                    <LazyDemoPreview urlOverride='ClawHost Go' hideTitleBar />
+                                    <LazyDemoPreview urlOverride={t('go.pageTitle')} hideTitleBar />
                                 </Suspense>
                             </div>
                         </div>
@@ -108,7 +109,7 @@ const MacosDesktopPreview: FC<MacosDesktopPreviewProps> = ({ previewRef, preview
                         <div className='mx-0.5 h-7 w-px shrink-0 bg-white/20' />
                         <img
                             src='/clawhost-logo.webp'
-                            alt='ClawHost Go'
+                            alt={t('go.pageTitle')}
                             className='h-9 w-9 shrink-0 rounded-xl'
                         />
                     </div>
