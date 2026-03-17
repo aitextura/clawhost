@@ -58,9 +58,9 @@ async function createProducts() {
     console.log('Creating Stripe products for Clawds + saving to DB\n')
 
     const tiers = [
-        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 2000, desc: '2 vCPU, 4 GB RAM, 40 GB disk, $3/mo AI credit' },
-        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 6500, desc: '4 vCPU, 8 GB RAM, 80 GB disk, $15/mo AI credit, SSH' },
-        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 19500, desc: '8 vCPU, 16 GB RAM, 160 GB disk, $50/mo AI credit, SSH, priority' }
+        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 2000, desc: '2 vCPU, 4 GB RAM, 40 GB disk' },
+        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 6500, desc: '4 vCPU, 8 GB RAM, 80 GB disk, SSH access' },
+        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 19500, desc: '8 vCPU, 16 GB RAM, 160 GB disk, SSH access, priority support' }
     ]
 
     console.log('--- Subscription Tiers ---')
