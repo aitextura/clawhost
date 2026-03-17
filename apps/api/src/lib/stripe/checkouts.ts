@@ -31,6 +31,7 @@ const checkouts = {
             success_url: params.successUrl || config.successUrl,
             cancel_url: params.cancelUrl || config.cancelUrl,
             metadata: params.metadata ?? {},
+            allow_promotion_codes: true,
             subscription_data: {
                 metadata: params.metadata ?? {},
                 ...(getBrand().payment.trialDays > 0
