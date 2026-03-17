@@ -24,14 +24,14 @@ const Waitlist: FC = (): ReactNode => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!email.trim()) return
+        if (!name.trim() || !email.trim() || !phone.trim()) return
 
         setIsPending(true)
         try {
             const result = await api.joinWaitlist({
-                name: name.trim() || undefined,
+                name: name.trim(),
                 email: email.trim(),
-                phone: phone.trim() || undefined
+                phone: phone.trim()
             })
             if (result.alreadyJoined) {
                 showToast(t('go.waitlistAlreadyJoinedToast'), 'info')
@@ -67,6 +67,7 @@ const Waitlist: FC = (): ReactNode => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder={t('landing.waitlistNamePlaceholder')}
+                            required
                             autoComplete='name'
                         />
                         <Input
@@ -82,11 +83,12 @@ const Waitlist: FC = (): ReactNode => {
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             placeholder={t('landing.waitlistPhonePlaceholder')}
+                            required
                             autoComplete='tel'
                         />
                         <Button
                             type='submit'
-                            disabled={!email.trim() || isPending}
+                            disabled={!name.trim() || !email.trim() || !phone.trim() || isPending}
                             className='w-full gap-2 border-0 text-white hover:opacity-90'
                             style={{
                                 background: `linear-gradient(to right, ${primaryColor}, ${accentColor})`

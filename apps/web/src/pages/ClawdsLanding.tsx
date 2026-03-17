@@ -451,7 +451,7 @@ const ClawdsLanding: FC = (): ReactNode => {
                             className='mb-16 flex flex-col gap-4 sm:flex-row'
                         >
                             <HeroButtons
-                                deployLabel={t('nav.deployClawds')}
+                                deployLabel={isWaitlistMode ? t('go.joinWaitlist') : t('nav.deployClawds')}
                                 githubLabel={t('landing.selfHostInstead')}
                                 showStars={true}
                             />
@@ -1664,7 +1664,7 @@ const ClawdsLanding: FC = (): ReactNode => {
 
                         <div className='flex flex-col items-center justify-center gap-4 sm:flex-row'>
                             <HeroButtons
-                                deployLabel={t('landing.deployClawdsNow')}
+                                deployLabel={isWaitlistMode ? t('go.joinWaitlist') : t('landing.deployClawdsNow')}
                                 githubLabel={t('landing.selfHostInstead')}
                                 showStars={true}
                                 large

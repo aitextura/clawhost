@@ -132,27 +132,29 @@ const Header: FC<HeaderProps> = ({
                             />
                         ) : (
                             <div className='flex items-center gap-2'>
-                                <Link
-                                    to={ROUTES.LOGIN}
-                                    className='text-muted-foreground hover:text-foreground hidden px-3 py-1.5 text-sm transition sm:block'
-                                >
-                                    {t('nav.login')}
-                                </Link>
+                                {import.meta.env.VITE_WAITLIST_MODE !== 'true' && (
+                                    <Link
+                                        to={ROUTES.LOGIN}
+                                        className='text-muted-foreground hover:text-foreground hidden px-3 py-1.5 text-sm transition sm:block'
+                                    >
+                                        {t('nav.login')}
+                                    </Link>
+                                )}
                                 <Button
                                     size='lg'
                                     className='gap-2 border-0 bg-gradient-to-r from-[#ef5350] to-[#c62828] px-4 text-white hover:opacity-90'
                                     asChild
                                 >
-                                    <Link to={ROUTES.LOGIN}>
+                                    <Link to={import.meta.env.VITE_WAITLIST_MODE === 'true' ? ROUTES.WAITLIST : ROUTES.LOGIN}>
                                         <LightningIcon
                                             className='h-4 w-4'
                                             weight='fill'
                                         />
                                         <span className='sm:hidden'>
-                                            {t('nav.deploy')}
+                                            {import.meta.env.VITE_WAITLIST_MODE === 'true' ? t('go.joinWaitlist') : t('nav.deploy')}
                                         </span>
                                         <span className='hidden sm:inline'>
-                                            {t('nav.deployOpenClaw')}
+                                            {import.meta.env.VITE_WAITLIST_MODE === 'true' ? t('go.joinWaitlist') : t('nav.deployOpenClaw')}
                                         </span>
                                     </Link>
                                 </Button>
