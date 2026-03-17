@@ -156,7 +156,7 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
 
     return (
         <Dialog open onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className='max-w-2xl'>
+            <DialogContent className='max-h-[90dvh] max-w-2xl overflow-y-auto'>
                 <DialogHeader>
                     <DialogTitle className='font-clash'>
                         {t('createClaw.title')}
