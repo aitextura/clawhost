@@ -3,7 +3,7 @@ import type { FC, ReactNode } from 'react'
 import { useRef } from 'react'
 import { WarningIcon } from '@phosphor-icons/react'
 import { t } from '@openclaw/i18n'
-import { clawProvider, isClawds } from '@openclaw/shared'
+import { clawProvider } from '@openclaw/shared'
 import { usePlans } from '@/hooks'
 import { useUIStore } from '@/lib/store'
 
@@ -50,7 +50,7 @@ const AnnouncementBanner: FC = (): ReactNode => {
 
     const unavailableProviders = Array.from(lockedProviders.current)
 
-    const visible = !isClawds() && !phBannerVisible && unavailableProviders.length > 0
+    const visible = !phBannerVisible && unavailableProviders.length > 0
 
     const providersText = unavailableProviders
         .map((p) => providerLabels[p])

@@ -11,7 +11,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { t } from '@openclaw/i18n'
-import { userRole } from '@openclaw/shared'
+import { userRole, isClawds } from '@openclaw/shared'
 import { useUIStore, usePreferencesStore } from '@/lib/store'
 import {
     ROUTES,
@@ -478,7 +478,7 @@ const Dashboard: FC = (): ReactNode => {
             transition={{ duration: 0.2 }}
             className={`bg-background text-foreground fixed inset-0 flex flex-col ${showFullBackground && !isLocal ? 'playground-grid' : ''}`}
         >
-            <AnnouncementBanner />
+            {!isClawds() && <AnnouncementBanner />}
             {isLocal && showFullBackground && (
                 <div className='playground-grid pointer-events-none fixed inset-0 opacity-50' />
             )}

@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { t } from '@openclaw/i18n'
+import { isClawds } from '@openclaw/shared'
 import { useAuth } from '@/lib/auth'
 import { useProfile } from '@/hooks'
 import { Button, Skeleton } from '@/components/ui'
@@ -73,7 +74,7 @@ const Header: FC<HeaderProps> = ({
                           : 'border-b border-transparent bg-transparent'
                 }`}
             >
-                <AnnouncementBanner />
+                {!isClawds() && <AnnouncementBanner />}
                 <ProductHuntBanner />
                 <div className='mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4'>
                     <div className='flex items-center gap-3'>

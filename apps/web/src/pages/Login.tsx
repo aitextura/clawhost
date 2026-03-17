@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { t } from '@openclaw/i18n'
-import { inputValidation } from '@openclaw/shared'
+import { inputValidation, isClawds } from '@openclaw/shared'
 import { useAuth } from '@/lib/auth'
 import { useUIStore } from '@/lib/store'
 import { ROUTES } from '@/lib'
@@ -266,7 +266,7 @@ const Login: FC = (): ReactNode => {
 
     return (
         <div className='bg-background text-foreground relative min-h-screen'>
-            <AnnouncementBanner />
+            {!isClawds() && <AnnouncementBanner />}
             <div className='flex min-h-screen items-center justify-center px-4 pb-24'>
             <PageTitle
                 title={
