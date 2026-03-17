@@ -41,6 +41,8 @@ import { GITHUB_REPO_URL } from '@/hooks'
 import { useUIStore } from '@/lib/store'
 import { TUTORIAL_URL } from '@/lib/links'
 import { useBrand } from '@/components/clawds'
+
+const isWaitlistMode = import.meta.env.VITE_WAITLIST_MODE === 'true'
 import {
     ShieldCheckIcon,
     ClockIcon,
@@ -1065,8 +1067,8 @@ const ClawdsLanding: FC = (): ReactNode => {
                                         className='border-0 bg-gradient-to-r from-[#4ecdc4] to-[#3ab5ad] text-xs text-white hover:opacity-90'
                                         asChild
                                     >
-                                        <Link to={user ? `${ROUTES.CLAWS}?deploy=1` : `${ROUTES.LOGIN}?deploy=1`}>
-                                            {t('landing.templateDeploy')}
+                                        <Link to={isWaitlistMode ? ROUTES.WAITLIST : user ? `${ROUTES.CLAWS}?deploy=1` : `${ROUTES.LOGIN}?deploy=1`}>
+                                            {isWaitlistMode ? t('go.joinWaitlist') : t('landing.templateDeploy')}
                                         </Link>
                                     </Button>
                                 </div>
@@ -1167,14 +1169,18 @@ const ClawdsLanding: FC = (): ReactNode => {
                                         >
                                             <Link
                                                 to={
-                                                    user
-                                                        ? `${ROUTES.CLAWS}?deploy=1`
-                                                        : `${ROUTES.LOGIN}?deploy=1`
+                                                    isWaitlistMode
+                                                        ? ROUTES.WAITLIST
+                                                        : user
+                                                            ? `${ROUTES.CLAWS}?deploy=1`
+                                                            : `${ROUTES.LOGIN}?deploy=1`
                                                 }
                                             >
-                                                {user
-                                                    ? t('landing.deploy')
-                                                    : t('landing.select')}
+                                                {isWaitlistMode
+                                                    ? t('go.joinWaitlist')
+                                                    : user
+                                                        ? t('landing.deploy')
+                                                        : t('landing.select')}
                                             </Link>
                                         </Button>
                                     </div>

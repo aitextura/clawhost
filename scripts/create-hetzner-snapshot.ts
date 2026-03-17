@@ -73,7 +73,7 @@ runcmd:
 
   - mkdir -p /etc/apt/keyrings
   - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-  - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
+  - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
   - apt-get update -o Dir::Etc::sourcelist="sources.list.d/nodesource.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
   - apt-get install -y nodejs
 
@@ -182,9 +182,16 @@ runcmd:
     chmod +x /tmp/install-brew.sh
     nohup /tmp/install-brew.sh > /var/log/brew-install.log 2>&1 &
 
+  - |
+    for i in $(seq 1 60); do
+      if systemctl is-active --quiet openclaw-gateway; then break; fi
+      sleep 5
+    done
+
   - rm -f /etc/ssh/ssh_host_*
   - truncate -s 0 /var/log/*.log
   - history -c
+  - touch /var/lib/cloud/.snapshot-ready
 
 final_message: "Snapshot base image ready"
 `
@@ -208,18 +215,14 @@ async function createSnapshot() {
     const serverId = createResult.server.id
     console.log(`   Server created: ${serverId}`)
 
-    console.log('2. Waiting for cloud-init to complete (~8-10 min)...')
-    for (let i = 0; i < 60; i++) {
+    console.log('2. Waiting for cloud-init to complete (~12 min)...')
+    for (let i = 0; i < 50; i++) {
         await sleep(15000)
-        const status = await hetznerFetch(`/servers/${serverId}`)
-        const serverStatus = status.server.status
-        process.stdout.write(`   [${i * 15}s] Status: ${serverStatus}\r`)
-
-        if (serverStatus === 'running' && i > 8) {
-            break
-        }
+        const elapsed = Math.floor((i + 1) * 15 / 60)
+        const secs = ((i + 1) * 15) % 60
+        process.stdout.write(`   [${elapsed}m ${secs}s] Waiting...   \r`)
     }
-    console.log('\n')
+    console.log('\n   12+ minutes elapsed, cloud-init should be done.')
 
     console.log('3. Stopping server before snapshot...')
     await hetznerFetch(`/servers/${serverId}/actions/shutdown`, {

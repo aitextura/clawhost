@@ -26,9 +26,11 @@ const HeroButtons: FC<HeroButtonsProps> = ({
             >
                 <Link
                     to={
-                        user
-                            ? `${ROUTES.CLAWS}?deploy=true`
-                            : `${ROUTES.LOGIN}?deploy=true`
+                        import.meta.env.VITE_WAITLIST_MODE === 'true'
+                            ? ROUTES.WAITLIST
+                            : user
+                                ? `${ROUTES.CLAWS}?deploy=true`
+                                : `${ROUTES.LOGIN}?deploy=true`
                     }
                 >
                     <LightningIcon className='h-5 w-5' weight='fill' />
