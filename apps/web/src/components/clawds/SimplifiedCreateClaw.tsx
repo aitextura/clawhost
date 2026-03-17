@@ -112,7 +112,9 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
     const primaryColor = brand.theme.primaryColor
 
     const promoCode =
-        new URLSearchParams(window.location.search).get('promo') || undefined
+        new URLSearchParams(window.location.search).get('promo') ||
+        sessionStorage.getItem('promo') ||
+        undefined
 
     const handleDeploy = () => {
         if (!selected) return

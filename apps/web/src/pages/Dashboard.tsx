@@ -190,6 +190,11 @@ const Dashboard: FC = (): ReactNode => {
     }, [])
 
     useEffect(() => {
+        const promoParam = searchParams.get('promo')
+        if (promoParam) {
+            sessionStorage.setItem('promo', promoParam)
+        }
+
         const planParam = searchParams.get('plan')
         const deployParam = searchParams.get('deploy')
         const providerParam = searchParams.get(
