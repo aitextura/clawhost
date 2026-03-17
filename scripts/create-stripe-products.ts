@@ -58,9 +58,9 @@ async function createProducts() {
     console.log('Creating Stripe products for Clawds + saving to DB\n')
 
     const tiers = [
-        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 2000, desc: '2 vCPU, 4 GB RAM, 40 GB disk' },
-        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 6500, desc: '4 vCPU, 8 GB RAM, 80 GB disk, SSH access' },
-        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 19500, desc: '8 vCPU, 16 GB RAM, 160 GB disk, SSH access, priority support' }
+        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 2000, desc: 'Dedicated AI agent VPS (2 vCPU, 4 GB RAM, 40 GB). Pre-configured OpenClaw with all channels, tools and skills. Chrome browser, hardened security, SSL.' },
+        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 6500, desc: 'Dedicated AI agent VPS (4 vCPU, 8 GB RAM, 80 GB). Everything in Starter + SSH access, sub-agent spawning, scheduled tasks, semantic memory.' },
+        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 19500, desc: 'Dedicated AI agent VPS (8 vCPU, 16 GB RAM, 160 GB). Everything in Pro + priority support, enterprise-grade security.' }
     ]
 
     console.log('--- Subscription Tiers ---')
