@@ -1,1 +1,0 @@
-ALTER TABLE "claws" ADD COLUMN "last_reinstalled_at" timestamp with time zone;

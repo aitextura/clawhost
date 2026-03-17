@@ -3,15 +3,19 @@ import type { AuthenticatedContext, BillingInterval, ProviderType } from '@/ts/T
 
 import crypto from 'crypto'
 import { eq, and, count, lt } from 'drizzle-orm'
-import { inputValidation, clawProvider, billingInterval } from '@openclaw/shared'
+import { inputValidation, clawProvider, billingInterval, getTierByProviderPlan } from '@openclaw/shared'
 import { db } from '@/db'
 import { users, sshKeys, claws, pendingClaws } from '@/db/schema'
 import { checkouts, customers } from '@/lib/polar'
+import { isStripe } from '@/lib/payments'
+import { customers as stripeCustomers } from '@/lib/stripe'
+import stripeCheckouts from '@/lib/stripe/checkouts'
 import { generatePassword } from '@/controllers/claws/helpers'
 import { getProvider } from '@/services/provider'
 import { t } from '@openclaw/i18n'
 import { ok, fail } from '@/lib/response'
 import { getEnvironment } from '@/lib/environment'
+import getSetting from '@/services/settings'
 
 const adjectives = [
     'cozy',
@@ -320,51 +324,99 @@ const initiateClawPurchase = async (c: AuthenticatedContext) => {
             return fail(c, t('api.sshKeyNotFound'), 404)
         }
 
-        let polarCustomerId = userResult[0].polarCustomerId
-
-        if (!polarCustomerId) {
-            const customer = await customers.getOrCreate({
-                email: userResult[0].email,
-                name: userResult[0].name || undefined,
-                externalId: userId
-            })
-            polarCustomerId = customer.id
-
-            await db
-                .update(users)
-                .set({ polarCustomerId })
-                .where(eq(users.id, userId))
-        }
-
-        const productId = getPolarProductId(planId, billingCycle)
-        if (!productId) {
-            return fail(c, t('api.paymentNotConfigured'), 400)
-        }
-
         const pendingId = crypto.randomUUID()
         const finalPassword = password || generatePassword()
-
-        const checkout = await checkouts.create({
-            productId,
-            customerEmail: userResult[0].email,
-            customerId: polarCustomerId,
-            metadata: {
-                pendingClawId: pendingId,
-                userId,
-                planId,
-                location,
-                name,
-                billingInterval: billingCycle,
-                environment: getEnvironment(c)
-            }
-        })
-
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+
+        const metadata: Record<string, string> = {
+            pendingClawId: pendingId,
+            userId,
+            planId,
+            location,
+            name,
+            billingInterval: billingCycle,
+            environment: getEnvironment(c)
+        }
+
+        let checkoutId: string
+        let checkoutUrl: string
+
+        if (isStripe()) {
+            const tier = getTierByProviderPlan(planId)
+            const stripePriceId = tier?.id
+                ? await getSetting(`stripe_price_tier_${tier.id}`)
+                : null
+
+            if (tier?.id) {
+                metadata.tierId = tier.id
+            }
+
+            if (!stripePriceId) {
+                return fail(c, t('api.paymentNotConfigured'), 400)
+            }
+
+            let stripeCustomerId = userResult[0].stripeCustomerId
+
+            if (!stripeCustomerId) {
+                const customer = await stripeCustomers.getOrCreate({
+                    email: userResult[0].email,
+                    name: userResult[0].name || undefined,
+                    externalId: userId
+                })
+                stripeCustomerId = customer.id
+
+                await db
+                    .update(users)
+                    .set({ stripeCustomerId })
+                    .where(eq(users.id, userId))
+            }
+
+            const checkout = await stripeCheckouts.create({
+                productId: stripePriceId,
+                customerEmail: userResult[0].email,
+                customerId: stripeCustomerId,
+                metadata
+            })
+
+            checkoutId = checkout.id
+            checkoutUrl = checkout.url
+        } else {
+            let polarCustomerId = userResult[0].polarCustomerId
+
+            if (!polarCustomerId) {
+                const customer = await customers.getOrCreate({
+                    email: userResult[0].email,
+                    name: userResult[0].name || undefined,
+                    externalId: userId
+                })
+                polarCustomerId = customer.id
+
+                await db
+                    .update(users)
+                    .set({ polarCustomerId })
+                    .where(eq(users.id, userId))
+            }
+
+            const productId = getPolarProductId(planId, billingCycle)
+            if (!productId) {
+                return fail(c, t('api.paymentNotConfigured'), 400)
+            }
+
+            const checkout = await checkouts.create({
+                productId,
+                customerEmail: userResult[0].email,
+                customerId: polarCustomerId,
+                metadata
+            })
+
+            checkoutId = checkout.id
+            checkoutUrl = checkout.url
+        }
 
         await db.insert(pendingClaws).values({
             id: pendingId,
             userId,
-            checkoutId: checkout.id,
+            checkoutId,
             name,
             provider: providerName || 'hetzner',
             planId,
@@ -380,8 +432,8 @@ const initiateClawPurchase = async (c: AuthenticatedContext) => {
         return ok(
             c,
             {
-                checkoutUrl: checkout.url,
-                checkoutId: checkout.id,
+                checkoutUrl,
+                checkoutId,
                 pendingClawId: pendingId,
                 expiresAt: expiresAt.toISOString()
             },

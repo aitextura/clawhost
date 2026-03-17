@@ -41,7 +41,7 @@ const SubdomainEmail: FC = (): ReactNode => {
                         <Img
                             src={CDN_ASSETS.LOGO}
                             width='140'
-                            alt='ClawHost'
+                            alt={brand.name}
                             style={logo}
                         />
                     </Section>

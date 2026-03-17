@@ -17,6 +17,8 @@ export const users = pgTable('users', {
     polarCustomerId: text('polar_customer_id'),
     hasLicense: boolean('has_license').notNull().default(false),
     stripeCustomerId: text('stripe_customer_id'),
+    litellmUserId: text('litellm_user_id'),
+    litellmKeyHash: text('litellm_key_hash'),
     role: text('role').notNull().default(userRole.user),
     createdAt: timestamp('created_at', { withTimezone: true })
         .defaultNow()
@@ -49,6 +51,7 @@ export const claws = pgTable(
         stripeSubscriptionId: text('stripe_subscription_id').unique(),
         stripePriceId: text('stripe_price_id'),
         stripeCustomerId: text('stripe_customer_id'),
+        tierId: text('tier_id'),
         subscriptionStatus: text('subscription_status').default('pending'),
         billingInterval: text('billing_interval'),
         deletionScheduledAt: timestamp('deletion_scheduled_at', {
@@ -113,6 +116,7 @@ export const sshKeys = pgTable(
         providerKeyId: integer('provider_key_id'),
         digitaloceanKeyId: integer('digitalocean_key_id'),
         vultrKeyId: integer('vultr_key_id'),
+        contaboKeyId: integer('contabo_key_id'),
         createdAt: timestamp('created_at', { withTimezone: true })
             .defaultNow()
             .notNull()
@@ -122,6 +126,11 @@ export const sshKeys = pgTable(
         unique('ssh_keys_user_fingerprint').on(table.userId, table.fingerprint)
     ]
 )
+
+export const settings = pgTable('settings', {
+    key: text('key').primaryKey(),
+    value: text('value').notNull()
+})
 
 export const rateLimits = pgTable('rate_limits', {
     key: text('key').primaryKey(),

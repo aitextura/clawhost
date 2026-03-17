@@ -4,6 +4,7 @@ import type { ProviderType } from '@/ts/Types'
 import hetzner from '@/services/hetzner'
 import digitalocean from '@/services/digitalocean'
 import vultr from '@/services/vultr'
+import contabo from '@/services/contabo'
 import cache from '@/services/provider/cache'
 
 const CACHE_TTL = 5 * 60 * 1000
@@ -41,7 +42,8 @@ const cached = <T>(
 const providers: Record<ProviderType, CloudProvider> = {
     hetzner,
     digitalocean,
-    vultr
+    vultr,
+    contabo
 }
 
 const wrappedProviders = new Map<ProviderType, CloudProvider>()

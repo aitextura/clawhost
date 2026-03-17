@@ -1144,7 +1144,7 @@ const ClawdsLanding: FC = (): ReactNode => {
                                         </li>
                                         <li className='flex items-center gap-2'>
                                             <CheckIcon className='h-4 w-4 text-[#4ecdc4]' />
-                                            {(tier.tokenLimitDaily / 1000).toFixed(0)}K {t('tiers.tokensPerDay')}
+                                            ${tier.includedAiCreditCents / 100} {t('tiers.aiCredit')}
                                         </li>
                                         {tier.sshAccess && (
                                             <li className='flex items-center gap-2'>
@@ -1202,7 +1202,7 @@ const ClawdsLanding: FC = (): ReactNode => {
                                         { label: t('landing.vCpuColumn'), values: ['2', '4', '8'] },
                                         { label: t('landing.ramColumn'), values: ['4 GB', '8 GB', '16 GB'] },
                                         { label: t('landing.storageColumn'), values: ['40 GB', '80 GB', '160 GB'] },
-                                        { label: t('tiers.tokensPerDay'), values: ['100K', '500K', '2M'] },
+                                        { label: t('tiers.aiCredit'), values: ['$3', '$15', '$50'] },
                                         { label: 'SSH Access', values: ['\u2014', '\u2713', '\u2713'] },
                                     ].map((row) => (
                                         <tr key={row.label} className='border-border border-b'>

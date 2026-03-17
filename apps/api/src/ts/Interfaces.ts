@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { ChildProcess } from 'child_process'
 import type {
     BillingInterval,
@@ -328,6 +329,52 @@ export interface VultrVolumeResponse {
     block: VultrVolume
 }
 
+export interface ContaboTokenResponse {
+    access_token: string
+    expires_in: number
+    token_type: string
+}
+
+export interface ContaboInstance {
+    instanceId: number
+    displayName: string
+    name: string
+    status: string
+    ipConfig: {
+        v4: {
+            ip: string
+            netmaskCidr: number
+            gateway: string
+        }
+    }
+    productId: string
+    region: string
+    cpuCores: number
+    ramMb: number
+    diskMb: number
+}
+
+export interface ContaboInstancesResponse {
+    data: ContaboInstance[]
+    _pagination: {
+        size: number
+        totalElements: number
+        totalPages: number
+        page: number
+    }
+}
+
+export interface ContaboSecret {
+    secretId: number
+    name: string
+    type: string
+    value: string
+}
+
+export interface ContaboSecretsResponse {
+    data: ContaboSecret[]
+}
+
 export interface ServerStatus {
     status: string
     ip: string
@@ -571,6 +618,7 @@ export interface ProvisionClawParams {
     subscriptionId: string
     customerId: string
     productId: string
+    litellmApiKey?: string
 }
 
 export interface ProvisionClawResponse {
@@ -1116,5 +1164,34 @@ export interface WaitlistStatusResponse {
 export interface FeatureEmailDefinition {
     key: string
     subject: string
-    render: () => import('react').ReactNode
+    render: () => ReactNode
+}
+
+export interface PurchaseTokensBody {
+    packIndex: number
+}
+
+export interface LiteLLMConfig {
+    apiUrl: string
+    masterKey: string
+}
+
+export interface LiteLLMUserResponse {
+    user_id: string
+    max_budget: number
+    spend: number
+}
+
+export interface LiteLLMKeyResponse {
+    key: string
+    key_name: string
+    token: string
+    user_id: string
+    max_budget: number
+}
+
+export interface LiteLLMSpendResponse {
+    user_id: string
+    max_budget: number
+    spend: number
 }

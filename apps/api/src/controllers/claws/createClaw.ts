@@ -39,7 +39,8 @@ const createClaw = async (c: AuthenticatedContext) => {
         const validProviders = [
             clawProvider.hetzner,
             clawProvider.digitalocean,
-            clawProvider.vultr
+            clawProvider.vultr,
+            clawProvider.contabo
         ]
         if (providerName && !validProviders.includes(providerName)) {
             return fail(c, t('api.invalidProvider'), 400)

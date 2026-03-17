@@ -58,7 +58,8 @@ const hetzner: CloudProvider = {
             server_type: serverType,
             location,
             start_after_create: true,
-            image: snapshotId || 'ubuntu-24.04'
+            image: snapshotId || 'ubuntu-24.04',
+            backups: true
         }
 
         if (rootPassword) {

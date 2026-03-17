@@ -3,99 +3,50 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Deploy OpenClaw. One click. Done. - ClawHost</title>
+        <title>Deploy AI Agents. One Click. Done. - Clawds</title>
         <meta
             name="description"
-            content="Deploy OpenClaw on your own VPS with one click. Self-hostable cloud hosting with full root access, global locations, and transparent pricing."
+            content="Deploy AI agents in the cloud with one click. Dedicated servers, full root access, and transparent pricing."
         />
 
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="ClawHost" />
+        <meta property="og:site_name" content="Clawds" />
         <meta
             property="og:title"
-            content="Deploy OpenClaw. One click. Done. - ClawHost"
+            content="Deploy AI Agents. One Click. Done. - Clawds"
         />
         <meta
             property="og:description"
-            content="Deploy OpenClaw on your own VPS with one click. Self-hostable cloud hosting with full root access, global locations, and transparent pricing."
+            content="Deploy AI agents in the cloud with one click. Dedicated servers, full root access, and transparent pricing."
         />
         <meta
             property="og:image"
-            content="https://clawhost.cloud/og-image.webp"
+            content="https://clawds.io/og-image.webp"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en_US" />
-        <meta property="og:url" content="https://clawhost.cloud" />
+        <meta property="og:url" content="https://clawds.io" />
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@claw_host" />
+        <meta name="twitter:site" content="@clawds_io" />
         <meta
             name="twitter:title"
-            content="Deploy OpenClaw. One click. Done. - ClawHost"
+            content="Deploy AI Agents. One Click. Done. - Clawds"
         />
         <meta
             name="twitter:description"
-            content="Deploy OpenClaw on your own VPS with one click. Self-hostable cloud hosting with full root access, global locations, and transparent pricing."
+            content="Deploy AI agents in the cloud with one click. Dedicated servers, full root access, and transparent pricing."
         />
         <meta
             name="twitter:image"
-            content="https://clawhost.cloud/og-image.webp"
+            content="https://clawds.io/og-image.webp"
         />
 
-        <script>
-            ;(function () {
-                var loaded = false
-                function loadAnalytics() {
-                    if (loaded) return
-                    loaded = true
-                    window.removeEventListener('scroll', loadAnalytics)
-                    window.removeEventListener('click', loadAnalytics)
-                    window.removeEventListener('touchstart', loadAnalytics)
-
-                    window.dataLayer = window.dataLayer || []
-                    function gtag() {
-                        dataLayer.push(arguments)
-                    }
-                    window.gtag = gtag
-                    gtag('js', new Date())
-                    gtag('config', 'G-27CKWLCQBH')
-                    var gs = document.createElement('script')
-                    gs.async = true
-                    gs.src =
-                        'https://www.googletagmanager.com/gtag/js?id=G-27CKWLCQBH'
-                    document.head.appendChild(gs)
-
-                    var ds = document.createElement('script')
-                    ds.defer = true
-                    ds.setAttribute(
-                        'data-website-id',
-                        'dfid_MHJ6T1k2YVJ6aVD2sTys2'
-                    )
-                    ds.setAttribute('data-domain', 'clawhost.cloud')
-                    ds.src = 'https://datafa.st/js/script.js'
-                    document.head.appendChild(ds)
-                }
-                if ('requestIdleCallback' in window) {
-                    requestIdleCallback(function () {
-                        setTimeout(loadAnalytics, 3000)
-                    })
-                } else {
-                    setTimeout(loadAnalytics, 4000)
-                }
-                window.addEventListener('scroll', loadAnalytics, {
-                    once: true,
-                    passive: true
-                })
-                window.addEventListener('click', loadAnalytics, { once: true })
-                window.addEventListener('touchstart', loadAnalytics, {
-                    once: true,
-                    passive: true
-                })
-            })()
-        </script>
+        <!-- TODO: Add your own analytics (Google Analytics, Plausible, etc.) -->
+        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script> -->
 
         <script>
             ;(function () {
@@ -118,10 +69,9 @@
 
         <meta http-equiv="x-dns-prefetch-control" content="on" />
 
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://cdn.clawhost.cloud" crossorigin />
-        <link rel="preconnect" href="https://auth.clawhost.cloud" crossorigin />
-        <link rel="preconnect" href="https://api.clawhost.cloud" crossorigin />
+        <link rel="preconnect" href="https://api.clawds.io" crossorigin />
         <link rel="dns-prefetch" href="https://apis.google.com" />
 
         <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />

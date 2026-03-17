@@ -5,4 +5,4 @@ Disallow: /ssh-keys
 Disallow: /account
 Disallow: /billing
 Disallow: /login
-Sitemap: https://clawhost.cloud/sitemap.xml
+Sitemap: https://clawds.io/sitemap.xml

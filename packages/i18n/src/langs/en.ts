@@ -40,6 +40,7 @@ const en = {
         fr: 'Français',
         es: 'Español',
         de: 'Deutsch',
+        ru: 'Русский',
         switchLanguage: 'Language'
     },
     theme: {

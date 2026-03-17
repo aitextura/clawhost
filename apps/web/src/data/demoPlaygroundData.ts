@@ -15,7 +15,7 @@ const demoClaws: Claw[] = [
         provider: 'hetzner',
         status: 'running',
         ip: '45.33.21.98',
-        planId: 'cx22',
+        planId: 'cx23',
         location: 'Frankfurt, DE',
         rootPassword: null,
         hasRootPassword: false,

@@ -7,11 +7,13 @@ export interface TierConfig {
     vcpu: number
     ramGb: number
     diskGb: number
-    tokenLimitDaily: number
+    includedAiCreditCents: number
     features: string[]
     sshAccess: boolean
     providerPlans: Record<string, string>
 }
+
+export const AI_MARKUP_MULTIPLIER = 5
 
 export const TIERS: Record<TierId, TierConfig> = {
     starter: {
@@ -21,13 +23,14 @@ export const TIERS: Record<TierId, TierConfig> = {
         vcpu: 2,
         ramGb: 4,
         diskGb: 40,
-        tokenLimitDaily: 100_000,
+        includedAiCreditCents: 300,
         features: ['web_terminal'],
         sshAccess: false,
         providerPlans: {
-            hetzner: 'cx22',
+            hetzner: 'cx23',
             digitalocean: 's-2vcpu-4gb',
-            vultr: 'vc2-2c-4gb'
+            vultr: 'vc2-2c-4gb',
+            contabo: 'V45'
         }
     },
     pro: {
@@ -37,13 +40,14 @@ export const TIERS: Record<TierId, TierConfig> = {
         vcpu: 4,
         ramGb: 8,
         diskGb: 80,
-        tokenLimitDaily: 500_000,
+        includedAiCreditCents: 1500,
         features: ['web_terminal', 'ssh', 'priority_provisioning'],
         sshAccess: true,
         providerPlans: {
-            hetzner: 'cx32',
+            hetzner: 'cx33',
             digitalocean: 's-4vcpu-8gb',
-            vultr: 'vc2-4c-8gb'
+            vultr: 'vc2-4c-8gb',
+            contabo: 'V47'
         }
     },
     business: {
@@ -53,25 +57,35 @@ export const TIERS: Record<TierId, TierConfig> = {
         vcpu: 8,
         ramGb: 16,
         diskGb: 160,
-        tokenLimitDaily: 2_000_000,
+        includedAiCreditCents: 5000,
         features: ['web_terminal', 'ssh', 'priority_provisioning', 'priority_support'],
         sshAccess: true,
         providerPlans: {
-            hetzner: 'cx42',
+            hetzner: 'cx43',
             digitalocean: 's-8vcpu-16gb',
-            vultr: 'vc2-8c-16gb'
+            vultr: 'vc2-8c-16gb',
+            contabo: 'V49'
         }
     }
 }
 
 export const TOKEN_PACKS = [
-    { amount: 50_000, priceCents: 500, label: '50K' },
-    { amount: 200_000, priceCents: 1500, label: '200K' },
-    { amount: 1_000_000, priceCents: 5000, label: '1M' }
+    { priceCents: 500, label: '$5' },
+    { priceCents: 1500, label: '$15' },
+    { priceCents: 5000, label: '$50' }
 ] as const
 
 export const TIER_IDS = Object.keys(TIERS) as TierId[]
 
 export function getTierById(id: string): TierConfig | undefined {
     return TIERS[id as TierId]
+}
+
+export function getTierByProviderPlan(planId: string): TierConfig | undefined {
+    for (const tier of Object.values(TIERS)) {
+        for (const providerPlan of Object.values(tier.providerPlans)) {
+            if (providerPlan === planId) return tier
+        }
+    }
+    return undefined
 }

@@ -28,6 +28,7 @@ export interface BrandConfig {
         defaultTier: string
         defaultProvider: string
         defaultLocation: string
+        trialDays: number
     }
 }
 
@@ -58,7 +59,8 @@ const OPENCLAW_BRAND: BrandConfig = {
         provider: 'polar',
         defaultTier: 'starter',
         defaultProvider: 'hetzner',
-        defaultLocation: 'fsn1'
+        defaultLocation: 'nbg1',
+        trialDays: 0
     }
 }
 
@@ -89,7 +91,8 @@ const CLAWDS_BRAND: BrandConfig = {
         provider: 'stripe',
         defaultTier: 'starter',
         defaultProvider: 'hetzner',
-        defaultLocation: 'fsn1'
+        defaultLocation: 'nbg1',
+        trialDays: 3
     }
 }
 

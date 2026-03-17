@@ -4,6 +4,7 @@ import clawsRoutes from '@/routes/claws'
 import cronRoutes from '@/routes/cron'
 import plansRoutes from '@/routes/plans'
 import sshKeysRoutes from '@/routes/ssh-keys'
+import tokensRoutes from '@/routes/tokens'
 import usersRoutes from '@/routes/users'
 import waitlistRoutes from '@/routes/waitlist'
 import webhooksRoutes from '@/routes/webhooks'
@@ -15,6 +16,7 @@ export {
     cronRoutes,
     plansRoutes,
     sshKeysRoutes,
+    tokensRoutes,
     usersRoutes,
     waitlistRoutes,
     webhooksRoutes

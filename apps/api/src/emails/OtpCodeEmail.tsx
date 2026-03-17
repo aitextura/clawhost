@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react'
 import type { OtpCodeEmailProps } from '@/ts/Interfaces'
 
 import { t } from '@openclaw/i18n'
+import { brand } from '@openclaw/shared'
 
 import {
     Body,
@@ -58,7 +59,7 @@ const OtpCodeEmail: FC<OtpCodeEmailProps> = ({ code }): ReactNode => {
                         <Img
                             src={CDN_ASSETS.LOGO}
                             width='140'
-                            alt='ClawHost'
+                            alt={brand.name}
                             style={logo}
                         />
                     </Section>

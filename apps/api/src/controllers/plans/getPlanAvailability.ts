@@ -62,7 +62,7 @@ const vultrCustomPrices: Record<string, number> = {
     'vhf-12c-48gb': 500
 }
 
-const pricesByProvider: Record<ProviderType, Record<string, number>> = {
+const pricesByProvider: Partial<Record<ProviderType, Record<string, number>>> = {
     hetzner: hetznerCustomPrices,
     digitalocean: digitaloceanCustomPrices,
     vultr: vultrCustomPrices

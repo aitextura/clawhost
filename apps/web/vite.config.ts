@@ -7,6 +7,7 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import remarkGfm from 'remark-gfm'
 import viteMdxSanitize from './src/plugins/vite-mdx-sanitize'
+import viteMdxBrand from './src/plugins/vite-mdx-brand'
 import viteBrandHtml from './src/plugins/vite-brand-html'
 
 export default defineConfig(({ mode }) => {
@@ -15,6 +16,7 @@ export default defineConfig(({ mode }) => {
     return {
         plugins: [
             viteBrandHtml(),
+            viteMdxBrand(),
             viteMdxSanitize(),
             mdx({
                 remarkPlugins: [

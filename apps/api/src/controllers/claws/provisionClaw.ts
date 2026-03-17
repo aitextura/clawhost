@@ -7,10 +7,12 @@ import type { ProviderType } from '@/ts/Types'
 import crypto from 'crypto'
 import { eq } from 'drizzle-orm'
 import { clawStatus, inputValidation } from '@openclaw/shared'
+import { isStripe } from '@/lib/payments'
 import { db } from '@/db'
 import { claws, pendingClaws, sshKeys, volumes } from '@/db/schema'
 import { getProvider } from '@/services/provider'
 import cloudflare from '@/services/cloudflare'
+import { getTierByProviderPlan } from '@openclaw/shared'
 import {
     generateSlug,
     generateServerName,
@@ -18,16 +20,21 @@ import {
     generateCloudInit,
     DOMAIN
 } from '@/controllers/claws/helpers'
+import generateSnapshotCloudInit from '@/controllers/claws/helpers/generateSnapshotCloudInit'
 import { t } from '@openclaw/i18n'
 
 const provisionClaw = async (
     params: ProvisionClawParams
 ): Promise<ProvisionClawResponse> => {
     try {
+        const subscriptionColumn = isStripe()
+            ? claws.stripeSubscriptionId
+            : claws.polarSubscriptionId
+
         const existingClaw = await db
             .select()
             .from(claws)
-            .where(eq(claws.polarSubscriptionId, params.subscriptionId))
+            .where(eq(subscriptionColumn, params.subscriptionId))
             .limit(1)
 
         if (existingClaw[0]) {
@@ -74,25 +81,53 @@ const provisionClaw = async (
         const subdomain = generateSlug(id)
         const gatewayToken = generateToken()
 
+        const getSshKeyId = (provider: ProviderType, sshKey: typeof sshKeyResult extends (infer T)[] | null ? NonNullable<T> : never): number | null => {
+            if (provider === 'digitalocean') return sshKey.digitaloceanKeyId
+            if (provider === 'vultr') return sshKey.vultrKeyId
+            if (provider === 'contabo') return sshKey.contaboKeyId
+            return sshKey.providerKeyId
+        }
+
         let providerSshKeyIds: number[] | undefined
         if (sshKeyResult && sshKeyResult[0]) {
-            const keyId =
-                providerName === 'digitalocean'
-                    ? sshKeyResult[0].digitaloceanKeyId
-                    : providerName === 'vultr'
-                      ? sshKeyResult[0].vultrKeyId
-                      : sshKeyResult[0].providerKeyId
+            const keyId = getSshKeyId(providerName, sshKeyResult[0])
             if (keyId) {
                 providerSshKeyIds = [keyId]
             }
         }
 
-        const cloudInitScript = generateCloudInit(
-            pending.rootPassword || '',
-            subdomain,
-            DOMAIN,
-            gatewayToken
-        )
+        const snapshotId = process.env.HETZNER_SNAPSHOT_ID
+        const litellmBaseUrl = process.env.LITELLM_API_URL
+
+        const cloudInitScript = snapshotId && providerName === 'hetzner'
+            ? generateSnapshotCloudInit(
+                pending.rootPassword || '',
+                subdomain,
+                DOMAIN,
+                gatewayToken,
+                params.litellmApiKey,
+                litellmBaseUrl
+            )
+            : generateCloudInit(
+                pending.rootPassword || '',
+                subdomain,
+                DOMAIN,
+                gatewayToken,
+                params.litellmApiKey,
+                litellmBaseUrl
+            )
+
+        const subscriptionFields = isStripe()
+            ? {
+                stripeSubscriptionId: params.subscriptionId,
+                stripePriceId: params.productId,
+                stripeCustomerId: params.customerId
+            }
+            : {
+                polarSubscriptionId: params.subscriptionId,
+                polarProductId: params.productId,
+                polarCustomerId: params.customerId
+            }
 
         await db.insert(claws).values({
             id,
@@ -106,15 +141,15 @@ const provisionClaw = async (
             sshKeyId: pending.sshKeyId,
             subdomain,
             gatewayToken,
-            polarSubscriptionId: params.subscriptionId,
-            polarProductId: params.productId,
-            polarCustomerId: params.customerId,
+            tierId: pending.planId,
+            ...subscriptionFields,
             subscriptionStatus: 'active',
             billingInterval: pending.billingInterval
         })
 
         let serverId: number
         let ip: string
+        let actualProvider = providerName
 
         try {
             const serverName = generateServerName(pending.name, id)
@@ -124,14 +159,70 @@ const provisionClaw = async (
                 pending.location,
                 pending.rootPassword || undefined,
                 providerSshKeyIds,
-                '',
+                snapshotId && providerName === 'hetzner' ? snapshotId : '',
                 cloudInitScript
             )
             serverId = server.serverId
             ip = server.ip
         } catch (providerErr) {
-            await db.delete(claws).where(eq(claws.id, id))
-            throw providerErr
+            if (providerName === 'hetzner' && process.env.CONTABO_CLIENT_ID) {
+                try {
+                    const tier = getTierByProviderPlan(pending.planId)
+                    const contaboPlanId = tier?.providerPlans.contabo
+                    if (!contaboPlanId) throw providerErr
+
+                    const fallbackProvider = getProvider('contabo')
+                    const contaboLocation = process.env.CONTABO_DEFAULT_REGION || 'EU'
+
+                    let contaboSshKeyIds: number[] | undefined
+                    if (sshKeyResult && sshKeyResult[0]) {
+                        const keyId = getSshKeyId('contabo', sshKeyResult[0])
+                        if (keyId) {
+                            contaboSshKeyIds = [keyId]
+                        }
+                    }
+
+                    const fallbackCloudInit = generateCloudInit(
+                        pending.rootPassword || '',
+                        subdomain,
+                        DOMAIN,
+                        gatewayToken,
+                        params.litellmApiKey,
+                        litellmBaseUrl
+                    )
+
+                    const serverName = generateServerName(pending.name, id)
+                    const server = await fallbackProvider.createServer(
+                        serverName,
+                        contaboPlanId,
+                        contaboLocation,
+                        pending.rootPassword || undefined,
+                        contaboSshKeyIds,
+                        '',
+                        fallbackCloudInit
+                    )
+                    serverId = server.serverId
+                    ip = server.ip
+                    actualProvider = 'contabo'
+                } catch (fallbackErr) {
+                    console.error('Contabo fallback also failed:', fallbackErr)
+                    await db.delete(claws).where(eq(claws.id, id))
+                    throw providerErr
+                }
+            } else {
+                await db.delete(claws).where(eq(claws.id, id))
+                throw providerErr
+            }
+        }
+
+        const updateFields: Record<string, unknown> = {
+            providerServerId: serverId.toString(),
+            status: clawStatus.configuring,
+            ip
+        }
+
+        if (actualProvider !== providerName) {
+            updateFields.provider = actualProvider
         }
 
         await Promise.all([
@@ -142,11 +233,7 @@ const provisionClaw = async (
                 ),
             db
                 .update(claws)
-                .set({
-                    providerServerId: serverId.toString(),
-                    status: clawStatus.configuring,
-                    ip
-                })
+                .set(updateFields)
                 .where(eq(claws.id, id))
         ])
 

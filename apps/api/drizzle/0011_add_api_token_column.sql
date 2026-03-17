@@ -1,1 +1,0 @@
-ALTER TABLE "pending_claws" ADD COLUMN "api_token" text;

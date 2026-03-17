@@ -24,8 +24,13 @@ const estimateReadingTime = (description: string): number => {
     return Math.max(1, Math.round(estimatedTotal / 200))
 }
 
+const brandReplace = (text: string): string =>
+    isClawds() ? text.replace(/ClawHost/g, brand.name) : text
+
 const buildPostMeta = (mod: BlogPostModule): BlogPostMeta => ({
     ...mod.frontmatter,
+    title: brandReplace(mod.frontmatter.title),
+    description: brandReplace(mod.frontmatter.description),
     author: mod.frontmatter.author === 'ClawHost' ? brand.name : mod.frontmatter.author,
     readingTime: estimateReadingTime(mod.frontmatter.description)
 })

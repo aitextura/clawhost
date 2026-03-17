@@ -1,4 +1,6 @@
 {
+    "buildCommand": "pnpm --filter web build",
+    "outputDirectory": "apps/web/dist",
     "git": {
         "deploymentEnabled": {
             "Production": true,
@@ -8,7 +10,7 @@
     "rewrites": [
         {
             "source": "/api/cron/:path*",
-            "destination": "https://api.clawhost.cloud/cron/:path*"
+            "destination": "https://api.clawds.io/cron/:path*"
         },
         { "source": "/(.*)", "destination": "/index.html" }
     ],

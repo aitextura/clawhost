@@ -69,7 +69,7 @@ const providerLimits: Partial<Record<ProviderType, number>> = {
     hetzner: 100
 }
 
-const planOrders: Record<ProviderType, PlanOrder> = {
+const planOrders: Partial<Record<ProviderType, PlanOrder>> = {
     hetzner: { order: hetznerPlanOrder },
     digitalocean: { order: digitaloceanPlanOrder },
     vultr: { order: vultrPlanOrder }

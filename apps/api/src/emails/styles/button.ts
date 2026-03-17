@@ -1,6 +1,8 @@
+import { brand } from '@openclaw/shared'
+
 const button = {
-    background: 'linear-gradient(to right, #ef5350, #c62828)',
-    backgroundColor: '#ef5350',
+    background: `linear-gradient(to right, ${brand.theme.primaryColor}, ${brand.theme.accentColor})`,
+    backgroundColor: brand.theme.primaryColor,
     borderRadius: '9999px',
     color: '#ffffff',
     fontSize: '15px',

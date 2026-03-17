@@ -42,6 +42,7 @@ const de: Translations = {
         fr: 'Français',
         es: 'Español',
         de: 'Deutsch',
+        ru: 'Русский',
         switchLanguage: 'Sprache'
     },
     theme: {

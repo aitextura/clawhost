@@ -47,11 +47,12 @@ const createSSHKey = async (c: AuthenticatedContext) => {
 
         const keyLabel = `${name}-${userId.slice(0, 8)}`
 
-        const [hetznerResult, doResult, vultrResult] = await Promise.allSettled(
+        const [hetznerResult, doResult, vultrResult, contaboResult] = await Promise.allSettled(
             [
                 getProvider('hetzner').createSSHKey(keyLabel, publicKey),
                 getProvider('digitalocean').createSSHKey(keyLabel, publicKey),
-                getProvider('vultr').createSSHKey(keyLabel, publicKey)
+                getProvider('vultr').createSSHKey(keyLabel, publicKey),
+                getProvider('contabo').createSSHKey(keyLabel, publicKey)
             ]
         )
 
@@ -64,6 +65,8 @@ const createSSHKey = async (c: AuthenticatedContext) => {
             doResult.status === 'fulfilled' ? doResult.value.id : null
         const vultrKeyId =
             vultrResult.status === 'fulfilled' ? vultrResult.value.id : null
+        const contaboKeyId =
+            contaboResult.status === 'fulfilled' ? contaboResult.value.id : null
 
         if (doResult.status === 'rejected') {
             console.error(
@@ -77,6 +80,12 @@ const createSSHKey = async (c: AuthenticatedContext) => {
                 vultrResult.reason
             )
         }
+        if (contaboResult.status === 'rejected') {
+            console.error(
+                'Failed to register SSH key with Contabo:',
+                contaboResult.reason
+            )
+        }
 
         const id = crypto.randomUUID()
         await db.insert(sshKeys).values({
@@ -87,7 +96,8 @@ const createSSHKey = async (c: AuthenticatedContext) => {
             fingerprint: hetznerKey.fingerprint,
             providerKeyId: hetznerKey.id,
             digitaloceanKeyId,
-            vultrKeyId
+            vultrKeyId,
+            contaboKeyId
         })
 
         return ok(
