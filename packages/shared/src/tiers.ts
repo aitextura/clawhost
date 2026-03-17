@@ -19,11 +19,11 @@ export const TIERS: Record<TierId, TierConfig> = {
     starter: {
         id: 'starter',
         name: 'Starter',
-        priceMonthly: 1500,
+        priceMonthly: 2000,
         vcpu: 2,
         ramGb: 4,
         diskGb: 40,
-        includedAiCreditCents: 300,
+        includedAiCreditCents: 0,
         features: ['web_terminal'],
         sshAccess: false,
         providerPlans: {
@@ -37,11 +37,11 @@ export const TIERS: Record<TierId, TierConfig> = {
     pro: {
         id: 'pro',
         name: 'Pro',
-        priceMonthly: 4900,
+        priceMonthly: 6500,
         vcpu: 4,
         ramGb: 8,
         diskGb: 80,
-        includedAiCreditCents: 1500,
+        includedAiCreditCents: 0,
         features: ['web_terminal', 'ssh', 'priority_provisioning'],
         sshAccess: true,
         providerPlans: {
@@ -55,11 +55,11 @@ export const TIERS: Record<TierId, TierConfig> = {
     business: {
         id: 'business',
         name: 'Business',
-        priceMonthly: 14900,
+        priceMonthly: 19500,
         vcpu: 8,
         ramGb: 16,
         diskGb: 160,
-        includedAiCreditCents: 5000,
+        includedAiCreditCents: 0,
         features: ['web_terminal', 'ssh', 'priority_provisioning', 'priority_support'],
         sshAccess: true,
         providerPlans: {

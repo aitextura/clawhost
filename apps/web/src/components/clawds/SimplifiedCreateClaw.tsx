@@ -86,13 +86,6 @@ function TierCard({
                     />
                     {tier.diskGb} GB Disk
                 </li>
-                <li className='flex items-center gap-2'>
-                    <CheckIcon
-                        className='h-4 w-4'
-                        style={{ color: primaryColor }}
-                    />
-                    ${tier.includedAiCreditCents / 100} {t('tiers.aiCredit' as Parameters<typeof t>[0])}
-                </li>
                 {tier.sshAccess && (
                     <li className='flex items-center gap-2'>
                         <CheckIcon

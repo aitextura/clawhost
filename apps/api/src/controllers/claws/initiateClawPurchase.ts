@@ -439,7 +439,8 @@ const initiateClawPurchase = async (c: AuthenticatedContext) => {
             },
             t('api.clawPurchaseInitiated')
         )
-    } catch {
+    } catch (err) {
+        console.error('[initiateClawPurchase]', err)
         return fail(c, t('api.failedToInitiatePurchase'), 500)
     }
 }
