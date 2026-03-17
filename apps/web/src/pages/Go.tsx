@@ -164,7 +164,7 @@ const Go: FC = (): ReactNode => {
             if (!email || isJoining || hasJoined) return
             setIsJoining(true)
             try {
-                const res = await api.joinWaitlist(email)
+                const res = await api.joinWaitlist({ email })
                 setHasJoined(true)
                 if (res.alreadyJoined) {
                     showToast(t('go.waitlistAlreadyJoinedToast'), 'info')

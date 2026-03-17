@@ -8,6 +8,13 @@
       "when": 1773702576039,
       "tag": "0000_lyrical_centennial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773740872515,
+      "tag": "0001_nosy_nextwave",
+      "breakpoints": true
     }
   ]
 }

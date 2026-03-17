@@ -25,7 +25,11 @@ const Changelog = lazy(() => import('@/pages/Changelog'))
 const Blog = lazy(() => import('@/pages/Blog'))
 const BlogPost = lazy(() => import('@/pages/BlogPost'))
 const Compare = lazy(() => import('@/pages/Compare'))
+const Waitlist = lazy(() => import('@/pages/Waitlist'))
+const WaitlistThanks = lazy(() => import('@/pages/WaitlistThanks'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
+
+const isWaitlistMode = import.meta.env.VITE_WAITLIST_MODE === 'true'
 
 const App: FC = (): ReactNode => {
     useThemeEffect()
@@ -44,7 +48,9 @@ const App: FC = (): ReactNode => {
                     <Routes>
                         <Route path={ROUTES.HOME} element={<Landing />} />
                         {brand.features.showGo && <Route path={ROUTES.GO} element={<Go />} />}
-                        <Route path={ROUTES.LOGIN} element={<Login />} />
+                        <Route path={ROUTES.LOGIN} element={isWaitlistMode ? <Waitlist /> : <Login />} />
+                        <Route path={ROUTES.WAITLIST} element={<Waitlist />} />
+                        <Route path={ROUTES.WAITLIST_THANKS} element={<WaitlistThanks />} />
                         <Route path={ROUTES.TERMS} element={<Terms />} />
                         <Route path={ROUTES.PRIVACY} element={<Privacy />} />
                         <Route

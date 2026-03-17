@@ -1626,6 +1626,12 @@ export interface WaitlistStatusResponse {
     joined: boolean
 }
 
+export interface JoinWaitlistData {
+    name?: string
+    email: string
+    phone?: string
+}
+
 export interface JoinWaitlistResponse {
     joined: boolean
     alreadyJoined: boolean

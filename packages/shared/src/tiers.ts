@@ -28,6 +28,7 @@ export const TIERS: Record<TierId, TierConfig> = {
         sshAccess: false,
         providerPlans: {
             hetzner: 'cx23',
+            hetznerFallback: 'cpx21',
             digitalocean: 's-2vcpu-4gb',
             vultr: 'vc2-2c-4gb',
             contabo: 'V45'
@@ -45,6 +46,7 @@ export const TIERS: Record<TierId, TierConfig> = {
         sshAccess: true,
         providerPlans: {
             hetzner: 'cx33',
+            hetznerFallback: 'cpx31',
             digitalocean: 's-4vcpu-8gb',
             vultr: 'vc2-4c-8gb',
             contabo: 'V47'
@@ -62,6 +64,7 @@ export const TIERS: Record<TierId, TierConfig> = {
         sshAccess: true,
         providerPlans: {
             hetzner: 'cx43',
+            hetznerFallback: 'cpx41',
             digitalocean: 's-8vcpu-16gb',
             vultr: 'vc2-8c-16gb',
             contabo: 'V49'

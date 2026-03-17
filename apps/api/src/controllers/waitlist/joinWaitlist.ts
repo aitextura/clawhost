@@ -29,7 +29,7 @@ const joinWaitlist = async (c: Context) => {
             }
         }
 
-        const { email } = await c.req.json<JoinWaitlistBody>()
+        const { name, email, phone } = await c.req.json<JoinWaitlistBody>()
 
         if (!email) {
             return fail(c, t('api.emailRequired'), 400)
@@ -56,7 +56,9 @@ const joinWaitlist = async (c: Context) => {
 
         await db.insert(waitlist).values({
             id: crypto.randomUUID(),
-            email: normalizedEmail
+            name: name?.trim() || null,
+            email: normalizedEmail,
+            phone: phone?.trim() || null
         })
 
         if (ip) {

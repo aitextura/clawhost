@@ -1257,7 +1257,14 @@ sshKeys: {
         demoClawRestarting: 'Перезапуск claw...',
         demoClawRestarted: 'Claw перезапущен.',
         demoClawDeleted: 'Claw удалён.',
-        demoStatus: '{{running}} работает, {{total}} всего'
+        demoStatus: '{{running}} работает, {{total}} всего',
+        waitlistNamePlaceholder: 'Ваше имя',
+        waitlistPhonePlaceholder: 'Номер телефона',
+        waitlistTitle: 'Присоединиться к списку ожидания',
+        waitlistSubtitle: 'Будьте первыми, кто развернёт AI-агентов в своём облаке. Оставьте данные — мы свяжемся, когда доступ откроется.',
+        waitlistThanksTitle: 'Вы в списке!',
+        waitlistThanksSubtitle: 'Спасибо за присоединение к списку ожидания. Мы свяжемся с вами, как только доступ откроется.',
+        waitlistThanksBack: 'Вернуться на главную'
     },
     blog: {
         title: 'Блог',

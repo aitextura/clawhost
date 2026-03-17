@@ -1154,7 +1154,9 @@ export interface PolarProductMapping {
 }
 
 export interface JoinWaitlistBody {
+    name?: string
     email: string
+    phone?: string
 }
 
 export interface WaitlistStatusResponse {

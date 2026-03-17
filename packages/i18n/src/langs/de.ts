@@ -1303,7 +1303,14 @@ const de: Translations = {
         demoClawRestarting: 'Claw wird neu gestartet...',
         demoClawRestarted: 'Claw neu gestartet.',
         demoClawDeleted: 'Claw gelöscht.',
-        demoStatus: '{{running}} aktiv, {{total}} gesamt'
+        demoStatus: '{{running}} aktiv, {{total}} gesamt',
+        waitlistNamePlaceholder: 'Ihr Name',
+        waitlistPhonePlaceholder: 'Telefonnummer',
+        waitlistTitle: 'Warteliste beitreten',
+        waitlistSubtitle: 'Seien Sie die Ersten, die KI-Agenten in Ihrer eigenen Cloud bereitstellen. Hinterlassen Sie Ihre Daten und wir benachrichtigen Sie.',
+        waitlistThanksTitle: 'Sie sind auf der Liste!',
+        waitlistThanksSubtitle: 'Vielen Dank für Ihre Anmeldung. Wir melden uns, sobald der Zugang verfügbar ist.',
+        waitlistThanksBack: 'Zurück zur Startseite'
     },
     blog: {
         title: 'Blog',

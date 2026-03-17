@@ -1297,7 +1297,14 @@ const es: Translations = {
         demoClawRestarting: 'Reiniciando claw...',
         demoClawRestarted: 'Claw reiniciado.',
         demoClawDeleted: 'Claw eliminado.',
-        demoStatus: '{{running}} ejecutándose, {{total}} en total'
+        demoStatus: '{{running}} ejecutándose, {{total}} en total',
+        waitlistNamePlaceholder: 'Tu nombre',
+        waitlistPhonePlaceholder: 'Número de teléfono',
+        waitlistTitle: 'Únete a la lista de espera',
+        waitlistSubtitle: 'Sé el primero en desplegar agentes de IA en tu propia nube. Deja tus datos y te avisaremos cuando esté listo.',
+        waitlistThanksTitle: '¡Estás en la lista!',
+        waitlistThanksSubtitle: 'Gracias por unirte a la lista de espera. Te contactaremos tan pronto como el acceso esté disponible.',
+        waitlistThanksBack: 'Volver al inicio'
     },
     blog: {
         title: 'Blog',

@@ -21,6 +21,7 @@ import type {
     DiagnosticsLogsResponse,
     DiagnosticsStatusResponse,
     GetAgentSkillsResponse,
+    JoinWaitlistData,
     JoinWaitlistResponse,
     Location,
     PlansResponse,
@@ -286,8 +287,8 @@ const api = {
     purchaseLicense: () =>
         client.post<LicenseCheckoutResponse>('/users/me/license/checkout'),
 
-    joinWaitlist: (email: string) =>
-        publicClient.post<JoinWaitlistResponse>('/waitlist', { email }),
+    joinWaitlist: (data: JoinWaitlistData) =>
+        publicClient.post<JoinWaitlistResponse>('/waitlist', data),
     checkWaitlistStatus: (email: string) =>
         publicClient.get<WaitlistStatusResponse>(
             `/waitlist/status?email=${encodeURIComponent(email)}`

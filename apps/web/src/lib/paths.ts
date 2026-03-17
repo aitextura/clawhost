@@ -11,7 +11,9 @@ const PATHS = {
     PRIVACY: 'privacy',
     CHANGELOG: 'changelog',
     BLOG: 'blog',
-    COMPARE: 'full-comparison'
+    COMPARE: 'full-comparison',
+    WAITLIST: 'waitlist',
+    WAITLIST_THANKS: 'waitlist/thanks'
 } as const
 
 export default PATHS

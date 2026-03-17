@@ -192,7 +192,9 @@ export const waitlist = pgTable(
     'waitlist',
     {
         id: text('id').primaryKey(),
+        name: text('name'),
         email: text('email').notNull().unique(),
+        phone: text('phone'),
         userId: text('user_id').references(() => users.id, {
             onDelete: 'set null'
         }),

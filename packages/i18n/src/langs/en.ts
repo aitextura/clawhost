@@ -1257,7 +1257,14 @@ const en = {
         demoClawRestarting: 'Restarting claw...',
         demoClawRestarted: 'Claw restarted.',
         demoClawDeleted: 'Claw deleted.',
-        demoStatus: '{{running}} running, {{total}} total'
+        demoStatus: '{{running}} running, {{total}} total',
+        waitlistNamePlaceholder: 'Your name',
+        waitlistPhonePlaceholder: 'Phone number',
+        waitlistTitle: 'Join the Waitlist',
+        waitlistSubtitle: 'Be the first to deploy AI agents on your own cloud. Leave your details and we\'ll notify you when it\'s ready.',
+        waitlistThanksTitle: 'You\'re on the list!',
+        waitlistThanksSubtitle: 'Thank you for joining the waitlist. We\'ll reach out as soon as access opens.',
+        waitlistThanksBack: 'Back to homepage'
     },
     blog: {
         title: 'Blog',

@@ -147,8 +147,8 @@ const provisionClaw = async (
             billingInterval: pending.billingInterval
         })
 
-        let serverId: number
-        let ip: string
+        let serverId = 0
+        let ip = ''
         let actualProvider = providerName
 
         try {
@@ -165,47 +165,94 @@ const provisionClaw = async (
             serverId = server.serverId
             ip = server.ip
         } catch (providerErr) {
-            if (providerName === 'hetzner' && process.env.CONTABO_CLIENT_ID) {
-                try {
-                    const tier = getTierByProviderPlan(pending.planId)
-                    const contaboPlanId = tier?.providerPlans.contabo
-                    if (!contaboPlanId) throw providerErr
+            if (providerName === 'hetzner') {
+                const tier = getTierByProviderPlan(pending.planId)
+                let fallbackSucceeded = false
 
-                    const fallbackProvider = getProvider('contabo')
-                    const contaboLocation = process.env.CONTABO_DEFAULT_REGION || 'EU'
+                if (tier?.providerPlans.hetznerFallback) {
+                    try {
+                        const fallbackPlanId = tier.providerPlans.hetznerFallback
+                        const fallbackCloudInit = snapshotId
+                            ? generateSnapshotCloudInit(
+                                pending.rootPassword || '',
+                                subdomain,
+                                DOMAIN,
+                                gatewayToken,
+                                params.litellmApiKey,
+                                litellmBaseUrl
+                            )
+                            : generateCloudInit(
+                                pending.rootPassword || '',
+                                subdomain,
+                                DOMAIN,
+                                gatewayToken,
+                                params.litellmApiKey,
+                                litellmBaseUrl
+                            )
 
-                    let contaboSshKeyIds: number[] | undefined
-                    if (sshKeyResult && sshKeyResult[0]) {
-                        const keyId = getSshKeyId('contabo', sshKeyResult[0])
-                        if (keyId) {
-                            contaboSshKeyIds = [keyId]
-                        }
+                        const serverName = generateServerName(pending.name, id)
+                        const server = await provider.createServer(
+                            serverName,
+                            fallbackPlanId,
+                            pending.location,
+                            pending.rootPassword || undefined,
+                            providerSshKeyIds,
+                            snapshotId || '',
+                            fallbackCloudInit
+                        )
+                        serverId = server.serverId
+                        ip = server.ip
+                        fallbackSucceeded = true
+                    } catch {
+                        console.error('Hetzner fallback plan also failed, trying Contabo...')
                     }
+                }
 
-                    const fallbackCloudInit = generateCloudInit(
-                        pending.rootPassword || '',
-                        subdomain,
-                        DOMAIN,
-                        gatewayToken,
-                        params.litellmApiKey,
-                        litellmBaseUrl
-                    )
+                if (!fallbackSucceeded && process.env.CONTABO_CLIENT_ID) {
+                    try {
+                        const contaboPlanId = tier?.providerPlans.contabo
+                        if (!contaboPlanId) throw providerErr
 
-                    const serverName = generateServerName(pending.name, id)
-                    const server = await fallbackProvider.createServer(
-                        serverName,
-                        contaboPlanId,
-                        contaboLocation,
-                        pending.rootPassword || undefined,
-                        contaboSshKeyIds,
-                        '',
-                        fallbackCloudInit
-                    )
-                    serverId = server.serverId
-                    ip = server.ip
-                    actualProvider = 'contabo'
-                } catch (fallbackErr) {
-                    console.error('Contabo fallback also failed:', fallbackErr)
+                        const fallbackProvider = getProvider('contabo')
+                        const contaboLocation = process.env.CONTABO_DEFAULT_REGION || 'EU'
+
+                        let contaboSshKeyIds: number[] | undefined
+                        if (sshKeyResult && sshKeyResult[0]) {
+                            const keyId = getSshKeyId('contabo', sshKeyResult[0])
+                            if (keyId) {
+                                contaboSshKeyIds = [keyId]
+                            }
+                        }
+
+                        const fallbackCloudInit = generateCloudInit(
+                            pending.rootPassword || '',
+                            subdomain,
+                            DOMAIN,
+                            gatewayToken,
+                            params.litellmApiKey,
+                            litellmBaseUrl
+                        )
+
+                        const serverName = generateServerName(pending.name, id)
+                        const server = await fallbackProvider.createServer(
+                            serverName,
+                            contaboPlanId,
+                            contaboLocation,
+                            pending.rootPassword || undefined,
+                            contaboSshKeyIds,
+                            '',
+                            fallbackCloudInit
+                        )
+                        serverId = server.serverId
+                        ip = server.ip
+                        actualProvider = 'contabo'
+                        fallbackSucceeded = true
+                    } catch (fallbackErr) {
+                        console.error('Contabo fallback also failed:', fallbackErr)
+                    }
+                }
+
+                if (!fallbackSucceeded) {
                     await db.delete(claws).where(eq(claws.id, id))
                     throw providerErr
                 }
