@@ -256,6 +256,10 @@ export interface ProviderIconProps {
     className?: string
 }
 
+export interface ProvisioningTimerProps {
+    createdAt: string
+}
+
 export interface HeaderProps {
     showNavLinks?: boolean
     navLinks?: NavLink[]

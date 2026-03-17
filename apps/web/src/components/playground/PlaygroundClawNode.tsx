@@ -23,7 +23,7 @@ import {
     useProfile,
     useCancelPendingClaw
 } from '@/hooks'
-import { ProviderIcon } from '@/components'
+import { ProviderIcon, ProvisioningTimer } from '@/components'
 import { getStatusConfig, generateSlug } from '@/lib/claw-utils'
 import {
     PlusIcon,
@@ -63,6 +63,7 @@ const PlaygroundClawNode: FC<PlaygroundClawNodeProps> = ({
 
     const isRunning = claw.status === clawStatus.running
     const isUnreachable = claw.status === clawStatus.unreachable
+    const isProvisioning = claw.status === clawStatus.creating || claw.status === clawStatus.configuring
     const canShowAgents = isRunning || isUnreachable
 
     const { showToast } = useUIStore()
@@ -269,6 +270,9 @@ const PlaygroundClawNode: FC<PlaygroundClawNodeProps> = ({
                                 />
                             )}
                             {status.label}
+                            {isProvisioning && (
+                                <ProvisioningTimer createdAt={claw.createdAt} />
+                            )}
                         </span>
                     </div>
                     {!readOnly && (

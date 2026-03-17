@@ -34,6 +34,7 @@ import PricingSection from '@/components/PricingSection'
 import ProductHuntBanner from '@/components/ProductHuntBanner'
 import ProductSwitcher from '@/components/ProductSwitcher'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import ProvisioningTimer from '@/components/ProvisioningTimer'
 import ProviderIcon from '@/components/ProviderIcon'
 import ScrollToBottomButton from '@/components/ScrollToBottomButton'
 import ScrollToTop from '@/components/ScrollToTop'
@@ -83,6 +84,7 @@ export {
     ProductHuntBanner,
     ProductSwitcher,
     ProtectedRoute,
+    ProvisioningTimer,
     ProviderIcon,
     ScrollToBottomButton,
     ScrollToTop,

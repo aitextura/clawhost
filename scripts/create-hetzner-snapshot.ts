@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
+import { Client } from 'ssh2'
 
 const envPath = resolve(import.meta.dirname ?? __dirname, '../apps/api/.env')
 try {
@@ -45,6 +46,23 @@ const hetznerFetch = async (path: string, options?: RequestInit) => {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
+const sshExec = (host: string, password: string, command: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const conn = new Client()
+        let output = ''
+        conn.on('ready', () => {
+            conn.exec(command, (err, stream) => {
+                if (err) { conn.end(); reject(err); return }
+                stream.on('data', (data: Buffer) => { output += data.toString() })
+                stream.stderr.on('data', (data: Buffer) => { output += data.toString() })
+                stream.on('close', () => { conn.end(); resolve(output.trim()) })
+            })
+        })
+        conn.on('error', reject)
+        conn.connect({ host, port: 22, username: 'root', password, readyTimeout: 10000 })
+    })
+}
+
 const CLOUD_INIT = `#cloud-config
 
 package_update: true
@@ -73,7 +91,7 @@ runcmd:
 
   - mkdir -p /etc/apt/keyrings
   - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-  - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
+  - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
   - apt-get update -o Dir::Etc::sourcelist="sources.list.d/nodesource.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
   - apt-get install -y nodejs
 
@@ -199,7 +217,7 @@ final_message: "Snapshot base image ready"
 async function createSnapshot() {
     console.log('Creating Hetzner snapshot base image...\n')
 
-    console.log('1. Creating cx22 server with Ubuntu 24.04...')
+    console.log('1. Creating cx23 server with Ubuntu 24.04...')
     const createResult = await hetznerFetch('/servers', {
         method: 'POST',
         body: JSON.stringify({
@@ -213,18 +231,77 @@ async function createSnapshot() {
     })
 
     const serverId = createResult.server.id
+    const serverIp = createResult.server.public_net.ipv4.ip
+    const rootPassword = createResult.root_password
     console.log(`   Server created: ${serverId}`)
+    console.log(`   IP: ${serverIp}`)
+    console.log(`   Root password: ${rootPassword}`)
 
-    console.log('2. Waiting for cloud-init to complete (~12 min)...')
-    for (let i = 0; i < 50; i++) {
+    console.log('2. Waiting for SSH to become available...')
+    let sshReady = false
+    for (let i = 0; i < 40; i++) {
         await sleep(15000)
         const elapsed = Math.floor((i + 1) * 15 / 60)
         const secs = ((i + 1) * 15) % 60
-        process.stdout.write(`   [${elapsed}m ${secs}s] Waiting...   \r`)
+        try {
+            const result = await sshExec(serverIp, rootPassword, 'cat /var/lib/cloud/.snapshot-ready 2>/dev/null && echo READY || echo WAITING')
+            process.stdout.write(`   [${elapsed}m ${secs}s] ${result.includes('READY') ? 'READY!' : 'Waiting...'}   \r`)
+            if (result.includes('READY')) {
+                sshReady = true
+                console.log(`\n   Cloud-init completed at ${elapsed}m ${secs}s`)
+                break
+            }
+        } catch {
+            process.stdout.write(`   [${elapsed}m ${secs}s] SSH not ready yet...   \r`)
+        }
     }
-    console.log('\n   12+ minutes elapsed, cloud-init should be done.')
 
-    console.log('3. Stopping server before snapshot...')
+    if (!sshReady) {
+        console.error('\n   ERROR: Cloud-init did not complete in 10 minutes!')
+        console.log('   Attempting to check what went wrong...')
+        try {
+            const logs = await sshExec(serverIp, rootPassword, 'tail -50 /var/log/cloud-init-output.log')
+            console.log('   Last 50 lines of cloud-init log:')
+            console.log(logs)
+        } catch {
+            console.log('   Could not retrieve logs via SSH')
+        }
+        console.log(`\n   Server ${serverId} left running for debugging. Delete manually when done.`)
+        process.exit(1)
+    }
+
+    console.log('3. Verifying installation...')
+    try {
+        const checks = await sshExec(serverIp, rootPassword, [
+            'echo "--- openclaw binary ---"',
+            'which openclaw && openclaw --version || echo "MISSING: openclaw"',
+            'echo "--- systemd service ---"',
+            'systemctl cat openclaw-gateway.service > /dev/null 2>&1 && echo "OK: service exists" || echo "MISSING: service"',
+            'echo "--- gateway status ---"',
+            'systemctl is-active openclaw-gateway || true',
+            'echo "--- node version ---"',
+            'node --version',
+            'echo "--- chrome ---"',
+            'google-chrome-stable --version 2>/dev/null || echo "MISSING: chrome"',
+            'echo "--- nginx ---"',
+            'nginx -v 2>&1',
+            'echo "--- user ---"',
+            'id openclaw || echo "MISSING: openclaw user"'
+        ].join(' && '))
+        console.log(checks)
+
+        if (checks.includes('MISSING:')) {
+            console.error('\n   ERROR: Some components are missing! Check output above.')
+            console.log(`   Server ${serverId} left running for debugging.`)
+            process.exit(1)
+        }
+    } catch (err) {
+        console.error('   Verification failed:', err)
+        console.log(`   Server ${serverId} left running for debugging.`)
+        process.exit(1)
+    }
+
+    console.log('\n4. Stopping server before snapshot...')
     await hetznerFetch(`/servers/${serverId}/actions/shutdown`, {
         method: 'POST'
     })
@@ -235,7 +312,7 @@ async function createSnapshot() {
         if (status.server.status === 'off') break
     }
 
-    console.log('4. Creating snapshot...')
+    console.log('5. Creating snapshot...')
     const snapshotResult = await hetznerFetch(
         `/servers/${serverId}/actions/create_image`,
         {
@@ -250,7 +327,7 @@ async function createSnapshot() {
     const imageId = snapshotResult.image.id
     console.log(`   Snapshot ID: ${imageId}`)
 
-    console.log('5. Waiting for snapshot to complete...')
+    console.log('6. Waiting for snapshot to complete...')
     for (let i = 0; i < 60; i++) {
         await sleep(10000)
         const imageStatus = await hetznerFetch(`/images/${imageId}`)
@@ -260,12 +337,11 @@ async function createSnapshot() {
         }
     }
 
-    console.log('6. Deleting builder server...')
+    console.log('7. Deleting builder server...')
     await hetznerFetch(`/servers/${serverId}`, { method: 'DELETE' })
 
-    console.log('\n--- Add this to apps/api/.env ---\n')
-    console.log(`HETZNER_SNAPSHOT_ID=${imageId}`)
-    console.log()
+    console.log(`\n✅ Snapshot created successfully!`)
+    console.log(`\nHETZNER_SNAPSHOT_ID=${imageId}`)
 }
 
 createSnapshot().catch((err) => {

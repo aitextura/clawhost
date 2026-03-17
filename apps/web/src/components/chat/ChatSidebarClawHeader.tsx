@@ -13,7 +13,7 @@ import { ClockIcon } from '@phosphor-icons/react'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui'
 import { useUIStore } from '@/lib/store'
 import { getLocale } from '@/lib'
-import { ClawAvatar } from '@/components'
+import { ClawAvatar, ProvisioningTimer } from '@/components'
 import {
     useStartClaw,
     useStopClaw,
@@ -270,8 +270,11 @@ const ChatSidebarClawHeader: FC<ChatSidebarClawHeaderProps> = ({
                     ) : claw.status === clawStatus.creating ||
                       claw.status === clawStatus.configuring ||
                       claw.status === clawStatus.awaitingPayment ? (
-                        <p className='text-muted-foreground truncate text-[11px]'>
+                        <p className='text-muted-foreground flex items-center gap-1.5 truncate text-[11px]'>
                             {statusConfig.label}
+                            {(claw.status === clawStatus.creating || claw.status === clawStatus.configuring) && (
+                                <ProvisioningTimer createdAt={claw.createdAt} />
+                            )}
                         </p>
                     ) : claw.status === clawStatus.stopped ? (
                         <p className='text-muted-foreground truncate text-[11px]'>

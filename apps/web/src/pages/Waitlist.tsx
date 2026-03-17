@@ -85,7 +85,7 @@ const Waitlist: FC = (): ReactNode => {
                             onChange={setPhone}
                             defaultCountry='US'
                             international
-                            countryCallingCodeEditable={false}
+                            countryCallingCodeEditable
                             placeholder={t('landing.waitlistPhonePlaceholder')}
                             className='border-input focus-within:ring-ring flex h-9 w-full rounded-lg border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-within:ring-1 md:text-sm [&>input]:border-0 [&>input]:bg-transparent [&>input]:outline-none [&>input]:placeholder:text-muted-foreground'
                         />
