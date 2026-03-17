@@ -4,6 +4,8 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { users } from '@/db/schema'
 import { orders } from '@/lib/polar'
+import { stripeOrders } from '@/lib/stripe'
+import { isStripe } from '@/lib/payments'
 import { ok, fail } from '@/lib/response'
 import { t } from '@openclaw/i18n'
 
@@ -17,13 +19,19 @@ const getBillingHistory = async (c: AuthenticatedContext) => {
         )
 
         const user = await db
-            .select({ polarCustomerId: users.polarCustomerId })
+            .select({
+                polarCustomerId: users.polarCustomerId,
+                stripeCustomerId: users.stripeCustomerId
+            })
             .from(users)
             .where(eq(users.id, userId))
             .limit(1)
 
-        const polarCustomerId = user[0]?.polarCustomerId
-        if (!polarCustomerId) {
+        const customerId = isStripe()
+            ? user[0]?.stripeCustomerId
+            : user[0]?.polarCustomerId
+
+        if (!customerId) {
             return ok(
                 c,
                 {
@@ -36,7 +44,9 @@ const getBillingHistory = async (c: AuthenticatedContext) => {
             )
         }
 
-        const result = await orders.listByCustomer(polarCustomerId, page, limit)
+        const result = isStripe()
+            ? await stripeOrders.listByCustomer(customerId, page, limit)
+            : await orders.listByCustomer(customerId, page, limit)
 
         return ok(
             c,
