@@ -3,6 +3,8 @@ import type { ErrorResponse } from '@/ts/Interfaces'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { t } from '@openclaw/i18n'
 import { brand } from '@openclaw/shared'
 import { api, ROUTES } from '@/lib'
@@ -16,7 +18,7 @@ const Waitlist: FC = (): ReactNode => {
     const { showToast } = useUIStore()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [phone, setPhone] = useState('')
+    const [phone, setPhone] = useState<string | undefined>('')
     const [isPending, setIsPending] = useState(false)
 
     const primaryColor = brand.theme.primaryColor
@@ -24,14 +26,14 @@ const Waitlist: FC = (): ReactNode => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!name.trim() || !email.trim() || !phone.trim()) return
+        if (!name.trim() || !email.trim() || !phone) return
 
         setIsPending(true)
         try {
             const result = await api.joinWaitlist({
                 name: name.trim(),
                 email: email.trim(),
-                phone: phone.trim()
+                phone: phone
             })
             if (result.alreadyJoined) {
                 showToast(t('go.waitlistAlreadyJoinedToast'), 'info')
@@ -78,17 +80,18 @@ const Waitlist: FC = (): ReactNode => {
                             required
                             autoComplete='email'
                         />
-                        <Input
-                            type='tel'
+                        <PhoneInput
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={setPhone}
+                            defaultCountry='US'
+                            international
+                            countryCallingCodeEditable={false}
                             placeholder={t('landing.waitlistPhonePlaceholder')}
-                            required
-                            autoComplete='tel'
+                            className='border-input focus-within:ring-ring flex h-9 w-full rounded-lg border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-within:ring-1 md:text-sm [&>input]:border-0 [&>input]:bg-transparent [&>input]:outline-none [&>input]:placeholder:text-muted-foreground'
                         />
                         <Button
                             type='submit'
-                            disabled={!name.trim() || !email.trim() || !phone.trim() || isPending}
+                            disabled={!name.trim() || !email.trim() || !phone || isPending}
                             className='w-full gap-2 border-0 text-white hover:opacity-90'
                             style={{
                                 background: `linear-gradient(to right, ${primaryColor}, ${accentColor})`
