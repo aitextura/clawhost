@@ -6,7 +6,9 @@ import { getProvider } from '@/services/provider'
 import { inputValidation } from '@openclaw/shared'
 import { ok, fail } from '@/lib/response'
 import { t } from '@openclaw/i18n'
+import { isStripe } from '@/lib/payments'
 import { getPlanPrices } from '@/lib/polar'
+import { getStripePlanPrices } from '@/lib/stripe'
 
 const hetznerPlanOrder = [
     'cx23',
@@ -93,7 +95,7 @@ const getPlans = async (c: Context) => {
             limit
                 ? provider.getServers().catch(() => null)
                 : Promise.resolve(null),
-            getPlanPrices()
+            isStripe() ? getStripePlanPrices() : getPlanPrices()
         ])
 
         const atCapacity = servers && limit ? servers.size >= limit : false

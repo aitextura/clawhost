@@ -190,10 +190,10 @@ runcmd:
   - systemctl enable fail2ban
   - systemctl restart fail2ban
 
-  # Node.js 22 LTS
-  - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  # Node.js 20 LTS (NOT 22 — v22 breaks tsx ESM resolution of workspace .ts packages)
+  - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
   - apt-get install -y nodejs
-  - npm install -g pnpm@10.29.3
+  - npm install -g pnpm@10.29.3 tsx
 
   # Create user
   - useradd -r -m -s /bin/bash -d /opt/clawds-api clawds
