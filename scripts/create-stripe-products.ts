@@ -58,9 +58,9 @@ async function createProducts() {
     console.log('Creating Stripe products for Clawds + saving to DB\n')
 
     const tiers = [
-        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 1500, desc: '2 vCPU, 4 GB RAM, 40 GB disk, $3/mo AI credit' },
-        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 4900, desc: '4 vCPU, 8 GB RAM, 80 GB disk, $15/mo AI credit, SSH' },
-        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 14900, desc: '8 vCPU, 16 GB RAM, 160 GB disk, $50/mo AI credit, SSH, priority' }
+        { dbKey: 'stripe_price_tier_starter', name: 'Clawds Starter', price: 2000, desc: '2 vCPU, 4 GB RAM, 40 GB disk, $3/mo AI credit' },
+        { dbKey: 'stripe_price_tier_pro', name: 'Clawds Pro', price: 6500, desc: '4 vCPU, 8 GB RAM, 80 GB disk, $15/mo AI credit, SSH' },
+        { dbKey: 'stripe_price_tier_business', name: 'Clawds Business', price: 19500, desc: '8 vCPU, 16 GB RAM, 160 GB disk, $50/mo AI credit, SSH, priority' }
     ]
 
     console.log('--- Subscription Tiers ---')
@@ -107,6 +107,42 @@ async function createProducts() {
         } catch (err) {
             console.error(`  [FAIL] ${p.name}: ${err}`)
         }
+    }
+
+    console.log('\n--- Promo Codes ---')
+
+    try {
+        const coupon30 = await stripe.coupons.create({
+            percent_off: 30,
+            duration: 'forever',
+            name: 'Aitextura 30% Off'
+        })
+        const promo30 = await stripe.promotionCodes.create({
+            coupon: coupon30.id,
+            code: 'AITEXTURA',
+            active: true
+        })
+        console.log(`  [OK] AITEXTURA (30% off forever) -> ${promo30.id}`)
+    } catch (err) {
+        console.error(`  [FAIL] AITEXTURA promo: ${err}`)
+    }
+
+    try {
+        const coupon100 = await stripe.coupons.create({
+            percent_off: 100,
+            duration: 'forever',
+            name: 'Internal - Full Discount',
+            max_redemptions: 10
+        })
+        const promo100 = await stripe.promotionCodes.create({
+            coupon: coupon100.id,
+            code: 'CLAWDS-INTERNAL-X7K9M2',
+            active: true,
+            max_redemptions: 10
+        })
+        console.log(`  [OK] CLAWDS-INTERNAL-X7K9M2 (100% off forever, max 10) -> ${promo100.id}`)
+    } catch (err) {
+        console.error(`  [FAIL] 100% promo: ${err}`)
     }
 
     console.log('\nAll prices saved to settings table in DB.')
