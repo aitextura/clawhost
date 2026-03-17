@@ -111,6 +111,9 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
 
     const primaryColor = brand.theme.primaryColor
 
+    const promoCode =
+        new URLSearchParams(window.location.search).get('promo') || undefined
+
     const handleDeploy = () => {
         if (!selected) return
 
@@ -125,7 +128,8 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
                 provider: provider as 'hetzner' | 'digitalocean' | 'vultr',
                 planId,
                 location,
-                priceMonthly: tier.priceMonthly
+                priceMonthly: tier.priceMonthly,
+                promoCode
             },
             {
                 onSuccess: (data) => {

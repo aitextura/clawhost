@@ -16,6 +16,22 @@ const checkouts = {
         const stripe = getStripeClient()
         const config = getStripeConfig()
 
+        // Если передан promoCode — ищем promotion_code в Stripe и применяем автоматически
+        // discounts и allow_promotion_codes несовместимы в Stripe
+        let promoDiscount: { promotion_code: string }[] | undefined
+        if (params.promoCode) {
+            try {
+                const promos = await stripe.promotionCodes.list({
+                    code: params.promoCode,
+                    active: true,
+                    limit: 1
+                })
+                if (promos.data[0]) {
+                    promoDiscount = [{ promotion_code: promos.data[0].id }]
+                }
+            } catch {}
+        }
+
         const session = await stripe.checkout.sessions.create({
             mode: 'subscription',
             line_items: [
@@ -31,7 +47,9 @@ const checkouts = {
             success_url: params.successUrl || config.successUrl,
             cancel_url: params.cancelUrl || config.cancelUrl,
             metadata: params.metadata ?? {},
-            allow_promotion_codes: true,
+            ...(promoDiscount
+                ? { discounts: promoDiscount }
+                : { allow_promotion_codes: true }),
             subscription_data: {
                 metadata: params.metadata ?? {},
                 ...(getBrand().payment.trialDays > 0

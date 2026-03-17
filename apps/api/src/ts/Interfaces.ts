@@ -456,6 +456,7 @@ export interface CreateCheckoutParams {
     successUrl?: string
     cancelUrl?: string
     metadata?: Record<string, string>
+    promoCode?: string
 }
 
 export interface PolarSubscription {
@@ -687,6 +688,7 @@ export interface InitiateClawPurchaseBody {
     volumeSize?: number
     priceMonthly: number
     billingInterval?: BillingInterval
+    promoCode?: string
 }
 
 export interface CloudflareDNSRecord {

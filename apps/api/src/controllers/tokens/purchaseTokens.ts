@@ -65,6 +65,7 @@ const purchaseTokens = async (c: AuthenticatedContext) => {
             mode: 'payment',
             line_items: [{ price: priceId, quantity: 1 }],
             customer: stripeCustomerId,
+            allow_promotion_codes: true,
             success_url: config.successUrl,
             cancel_url: config.cancelUrl,
             metadata: {

@@ -193,7 +193,8 @@ const initiateClawPurchase = async (c: AuthenticatedContext) => {
             sshKeyId,
             volumeSize,
             priceMonthly,
-            billingInterval: rawBillingInterval
+            billingInterval: rawBillingInterval,
+            promoCode
         } = await c.req.json<InitiateClawPurchaseBody>()
 
         const billingCycle = rawBillingInterval === billingInterval.YEAR ? billingInterval.YEAR : billingInterval.MONTH
@@ -375,7 +376,8 @@ const initiateClawPurchase = async (c: AuthenticatedContext) => {
                 productId: stripePriceId,
                 customerEmail: userResult[0].email,
                 customerId: stripeCustomerId,
-                metadata
+                metadata,
+                promoCode
             })
 
             checkoutId = checkout.id

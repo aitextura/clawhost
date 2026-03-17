@@ -491,6 +491,7 @@ export interface PurchaseClawData {
     volumeSize?: number
     priceMonthly: number
     billingInterval?: 'month' | 'year'
+    promoCode?: string
 }
 
 export interface DeleteClawResponse {
