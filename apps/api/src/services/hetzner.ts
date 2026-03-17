@@ -213,7 +213,7 @@ const hetzner: CloudProvider = {
         return data.datacenters.map((dc) => ({
             name: dc.name,
             locationName: dc.location.name,
-            availableServerTypeIds: dc.server_types.available
+            availableServerTypeIds: dc.server_types.supported
         }))
     },
 

@@ -156,13 +156,13 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
 
     return (
         <Dialog open onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className='max-h-[90dvh] max-w-2xl overflow-y-auto'>
+            <DialogContent className='flex max-h-[90dvh] max-w-2xl flex-col overflow-hidden'>
                 <DialogHeader>
                     <DialogTitle className='font-clash'>
                         {t('createClaw.title')}
                     </DialogTitle>
                 </DialogHeader>
-                <div className='grid gap-4 sm:grid-cols-3'>
+                <div className='grid flex-1 gap-4 overflow-y-auto sm:grid-cols-3'>
                     {TIER_IDS.map((tierId) => (
                         <TierCard
                             key={tierId}
@@ -173,7 +173,7 @@ const SimplifiedCreateClaw: FC<SimplifiedCreateClawProps> = ({
                         />
                     ))}
                 </div>
-                <div className='mt-2 flex justify-end'>
+                <div className='flex justify-end border-t pt-4'>
                     <Button
                         onClick={handleDeploy}
                         disabled={!selected || isPending}
