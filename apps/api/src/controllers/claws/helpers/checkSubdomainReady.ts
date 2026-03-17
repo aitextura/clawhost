@@ -13,11 +13,12 @@ const checkSubdomainReady = (subdomain: string): Promise<boolean> => {
     const pending = readyInflight.get(subdomain)
     if (pending) return pending
 
-    const promise = fetch(`https://${subdomain}.${DOMAIN}`, {
-        signal: AbortSignal.timeout(3000)
+    const promise = fetch(`http://${subdomain}.${DOMAIN}`, {
+        signal: AbortSignal.timeout(3000),
+        redirect: 'manual'
     })
         .then((response) => {
-            const result = response.ok
+            const result = response.status < 500
             readyCache.set(subdomain, {
                 data: result,
                 expiry: Date.now() + READY_CACHE_TTL
